@@ -48,3 +48,14 @@ values = "grafana/values.yaml"
 [[helm]]
 namespace = "kubelet-csr-approver"
 release = "kubelet-csr-approver"
+
+[[website]]
+name = "zq.lu"
+namespace = "web"
+hugo-repo = "https://github.com/nresare/zq.lu"
+
+[[website]]
+name = "noa.re"
+namespace = "web"
+hugo-repo = "https://github.com/nresare/noa.re"
+extra-hostnames = "nadia.resare.com"
