@@ -1,0 +1,12 @@
+apiVersion: gateway.envoyproxy.io/v1alpha1
+kind: Backend
+metadata:
+  name: unifi-noa-re
+  namespace: envoy-gateway-system
+spec:
+  endpoints:
+    - ip:
+        address: 192.168.168.207
+        port: 11443
+  appProtocols:
+    - gateway.envoyproxy.io/wss

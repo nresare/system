@@ -28,3 +28,14 @@ extra-resources = "cert-manager/extra"
 [[helm]]
 namespace = "cert-manager"
 release = "trust-manager"
+
+[[helm]]
+namespace = "envoy-gateway-system"
+release = "envoy-gateway"
+values = "envoy-gateway/values.yaml"
+extra-resources = "envoy-gateway/extra"
+
+[[helm]]
+namespace = "metrics-server"
+release = "metrics-server"
+

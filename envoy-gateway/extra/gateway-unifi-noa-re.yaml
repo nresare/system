@@ -1,0 +1,22 @@
+apiVersion: gateway.networking.k8s.io/v1
+kind: Gateway
+metadata:
+  name: unifi-noa-re
+  namespace: envoy-gateway-system
+spec:
+  gatewayClassName: eg
+  listeners:
+  - name: noa-re
+    hostname: unifi.noa.re
+    allowedRoutes:
+      namespaces:
+        from: Same
+    port: 443
+    protocol: HTTPS
+    tls:
+      certificateRefs:
+      - group: ""
+        kind: Secret
+        name: unifi-noa-re-tls
+      mode: Terminate
+

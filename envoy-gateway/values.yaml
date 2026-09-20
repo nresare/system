@@ -1,0 +1,9 @@
+deployment:
+  pod:
+    annotations:
+      noa.re/envoy-gateway-config-revision: enable-backend-api
+
+config:
+  envoyGateway:
+    extensionApis:
+      enableBackend: true

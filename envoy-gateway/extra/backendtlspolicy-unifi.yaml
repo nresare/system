@@ -1,0 +1,17 @@
+apiVersion: gateway.networking.k8s.io/v1
+kind: BackendTLSPolicy
+metadata:
+  name: unifi-noa-re
+  namespace: envoy-gateway-system
+spec:
+  targetRefs:
+    - group: gateway.envoyproxy.io
+      kind: Backend
+      name: unifi-noa-re
+  validation:
+    caCertificateRefs:
+      - group: ""
+        kind: ConfigMap
+        name: unifi-backend-ca
+    hostname: unifi.local
+
