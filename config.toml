@@ -78,3 +78,20 @@ namespace = "jwksproxy"
 image = "nresare/jwksproxy:0.2.0"
 replicas = 1
 config = { "/config/jwksproxy.toml" = "jwksproxy/jwksproxy.toml" }
+
+[[website]]
+name = "repo.noa.re"
+replicas = 2
+namespace = "reposnake"
+image = "nresare/reposnake"
+args = ["-c", "/config/reposnake.toml"]
+config = { "/config/reposnake.toml" = "reposnake/reposnake.toml" }
+custom-token-audiences = ["idmouse", "sts.amazonaws.com"]
+emptydir-path = "/var/tmp"
+
+[website.env]
+AWS_STS_REGIONAL_ENDPOINTS = "regional"
+AWS_REGION = "eu-west-2"
+AWS_ENDPOINT_URL = "http://rook-ceph-rgw-berries.rook-ceph.svc"
+AWS_ROLE_ARN = "arn:aws:iam:::role/reposnake"
+AWS_WEB_IDENTITY_TOKEN_FILE = "/var/run/secrets/tokens/sts.amazonaws.com"
