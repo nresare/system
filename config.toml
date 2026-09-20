@@ -39,3 +39,9 @@ extra-resources = "envoy-gateway/extra"
 namespace = "metrics-server"
 release = "metrics-server"
 
+[[helm]]
+namespace = "grafana"
+release = "grafana-operator"
+extra-resources = "grafana/extra"
+values = "grafana/values.yaml"
+
