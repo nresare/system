@@ -6,6 +6,7 @@ signing_key_storage = "kubernetes_secret"
 name = "idelephant-source"
 audience = "idmouse"
 issuer = "https://k8s.noa.re"
+algorithms = ["ES256"]
 validation-key = """
 -----BEGIN PUBLIC KEY-----
 MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEZ6Ul1nVfkmYhmUPzUjubypoX/VdC
@@ -20,6 +21,7 @@ sub = "system:serviceaccount:idelephant:default"
 name = "reposnake-source"
 audience = "idmouse"
 issuer = "https://k8s.noa.re"
+algorithms = ["ES256"]
 validation-key = """
 -----BEGIN PUBLIC KEY-----
 MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEZ6Ul1nVfkmYhmUPzUjubypoX/VdC
@@ -34,6 +36,7 @@ sub = "system:serviceaccount:reposnake:default"
 name = "relcoord-source"
 audience = "idmouse"
 issuer = "https://k8s.noa.re"
+algorithms = ["ES256"]
 validation-key = """
 -----BEGIN PUBLIC KEY-----
 MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEZ6Ul1nVfkmYhmUPzUjubypoX/VdC
