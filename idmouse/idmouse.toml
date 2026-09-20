@@ -6,6 +6,12 @@ signing_key_storage = "kubernetes_secret"
 name = "idelephant-source"
 audience = "idmouse"
 issuer = "https://k8s.noa.re"
+validation-key = """
+-----BEGIN PUBLIC KEY-----
+MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEZ6Ul1nVfkmYhmUPzUjubypoX/VdC
+W2moaqn5eexnMMuTTpefVloHEbtzrTVx50ZiuvmZ62rq/doNVELFqZt+RA==
+-----END PUBLIC KEY-----
+"""
 
 [role.claims]
 sub = "system:serviceaccount:idelephant:default"
@@ -14,6 +20,12 @@ sub = "system:serviceaccount:idelephant:default"
 name = "reposnake-source"
 audience = "idmouse"
 issuer = "https://k8s.noa.re"
+validation-key = """
+-----BEGIN PUBLIC KEY-----
+MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEZ6Ul1nVfkmYhmUPzUjubypoX/VdC
+W2moaqn5eexnMMuTTpefVloHEbtzrTVx50ZiuvmZ62rq/doNVELFqZt+RA==
+-----END PUBLIC KEY-----
+"""
 
 [role.claims]
 sub = "system:serviceaccount:reposnake:default"
@@ -22,6 +34,12 @@ sub = "system:serviceaccount:reposnake:default"
 name = "relcoord-source"
 audience = "idmouse"
 issuer = "https://k8s.noa.re"
+validation-key = """
+-----BEGIN PUBLIC KEY-----
+MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEZ6Ul1nVfkmYhmUPzUjubypoX/VdC
+W2moaqn5eexnMMuTTpefVloHEbtzrTVx50ZiuvmZ62rq/doNVELFqZt+RA==
+-----END PUBLIC KEY-----
+"""
 
 [role.claims]
 sub = "system:serviceaccount:relcoord:default"
