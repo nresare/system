@@ -27,8 +27,6 @@ spec:
         - name: acme-dns
           securityContext:
             allowPrivilegeEscalation: false
-            fsGroup: 65532
-            fsUser: 65532
           image: {{acme_dns_image}}
           volumeMounts:
             - mountPath: /db
