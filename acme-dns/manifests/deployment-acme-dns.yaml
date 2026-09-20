@@ -21,7 +21,8 @@ spec:
         - name: db
           persistentVolumeClaim:
             claimName: acme-dns
-
+      securityContext:
+        fsGroup: 65532
       containers:
         - name: acme-dns
           securityContext:
