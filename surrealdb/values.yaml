@@ -1,0 +1,15 @@
+image:
+  tag: {{surrealdb_version}}
+persistence:
+  enabled: true
+  size: 1Gi
+strategy:
+  type: Recreate
+surrealdb:
+  path: surrealkv://data/db
+  log: info
+podExtraEnv:
+  - name: SURREAL_CAPS_ALLOW_NET
+    value: idmouse.idmouse.svc,10.0.0.0/8
+podSecurityContext:
+  fsGroup: 65532

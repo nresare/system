@@ -59,3 +59,8 @@ name = "noa.re"
 namespace = "web"
 hugo-repo = "https://github.com/nresare/noa.re"
 extra-hostnames = "nadia.resare.com"
+
+[[helm]]
+namespace = "surrealdb"
+release = "surrealdb"
+values = "surrealdb/values.yaml"
