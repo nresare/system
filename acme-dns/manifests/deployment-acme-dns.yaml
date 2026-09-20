@@ -1,0 +1,44 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: acme-dns
+  labels:
+    app: acme-dns
+spec:
+  # since only a single instance can open the db, this needs to be 1
+  replicas: 1
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      app: acme-dns
+  template:
+    metadata:
+      labels:
+        app: acme-dns
+    spec:
+      volumes:
+        - name: db
+          persistentVolumeClaim:
+            claimName: acme-dns
+
+      containers:
+        - name: acme-dns
+          securityContext:
+            allowPrivilegeEscalation: false
+            fsGroup: 65532
+            fsUser: 65532
+          image: {{acme_dns_image}}
+          volumeMounts:
+            - mountPath: /db
+              name: db
+          ports:
+            - name: web
+              containerPort: 1080
+              protocol: TCP
+            - name: dns-tcp
+              containerPort: 1053
+              protocol: TCP
+            - name: dns
+              containerPort: 1053
+              protocol: UDP

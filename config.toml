@@ -13,3 +13,8 @@ namespace = "rook-ceph"
 release = "csi-drivers"
 values = "rook-ceph/csi-drivers-values.yaml"
 extra-resources = "rook-ceph/extra"
+
+[[copy]]
+namespace = "acme-dns"
+source = "acme-dns/manifests"
+config = {"/etc/acme-dns/config.cfg" = "acme-dns/config.cfg"}
