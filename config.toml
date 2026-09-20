@@ -64,3 +64,10 @@ extra-hostnames = "nadia.resare.com"
 namespace = "surrealdb"
 release = "surrealdb"
 values = "surrealdb/values.yaml"
+
+[[simple]]
+namespace = "idmouse"
+image = "nresare/idmouse"
+extra-resources = "idmouse/extra"
+k8s-role = "idmouse-signing-keys"
+config = {"/config/idmouse.toml" = "idmouse/idmouse.toml"}
