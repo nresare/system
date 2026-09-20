@@ -1,0 +1,95 @@
+repositories:
+  - name: jetstack
+    url: https://charts.jetstack.io
+  - name: surrealdb
+    url: https://helm.surrealdb.com
+  - name: teleport
+    url: https://charts.releases.teleport.dev
+  - name: envoyproxy
+    url: docker.io/envoyproxy
+    oci: true
+  - name: metrics-server
+    url: https://kubernetes-sigs.github.io/metrics-server/
+  - name: grafana-oci
+    url: ghcr.io/grafana/helm-charts
+    oci: true
+  - name: grafana
+    url: https://grafana.github.io/helm-charts
+  - name: grafana-community
+    url: https://grafana-community.github.io/helm-charts
+  - name: rook
+    url: https://charts.rook.io/release
+  - name: ceph-csi-operator
+    url: https://ceph.github.io/ceph-csi-operator
+  - name: argo
+    url: https://argoproj.github.io/argo-helm
+  - name: prometheus-community
+    url: ghcr.io/prometheus-community/charts
+    oci: true
+  - name: nats
+    url: https://nats-io.github.io/k8s/helm/charts/
+  - name: nack
+    url: repo.noa.re
+    oci: true
+  - name: portswigger-platform
+    oci: true
+    url: public.ecr.aws/portswigger-platform/charts
+
+releases:
+  - name: cert-manager
+    chart: jetstack/cert-manager
+    version: v1.21.2
+  - name: trust-manager
+    chart: jetstack/trust-manager
+    version: v0.25.0
+  - name: surrealdb
+    chart: surrealdb/surrealdb
+    version: 0.5.0
+  - name: teleport-cluster
+    chart: teleport/teleport-cluster
+    version: 18.11.0
+  - name: teleport-kube-agent
+    chart: teleport/teleport-kube-agent
+    version: 18.11.0
+  - name: envoy-gateway
+    chart: envoyproxy/gateway-helm
+    version: 1.9.1
+  - name: envoy-gateway-crds
+    chart: envoyproxy/gateway-crds-helm
+    version: 1.9.1
+  - name: metrics-server
+    chart: metrics-server/metrics-server
+    version: 3.14.0
+  - name: grafana-operator
+    chart: grafana-oci/grafana-operator
+    version: 5.25.0
+  - name: mimir
+    chart: grafana-oci/mimir-distributed
+    version: 6.2.0
+  - name: alloy
+    chart: grafana/alloy
+    version: 1.12.1
+  - name: loki
+    chart: grafana-community/loki
+    version: 18.13.0
+  - name: rook
+    chart: rook/rook-ceph
+    version: v1.20.7
+  - name: csi-drivers
+    chart: ceph-csi-operator/ceph-csi-drivers
+    version: 1.0.4
+  - name: argocd
+    chart: argo/argo-cd
+    version: 10.9.0
+  - name: kube-state-metrics
+    chart: prometheus-community/kube-state-metrics
+    version: 8.4.2
+  - name: nats
+    chart: nats/nats
+    version: 2.14.6
+  - name: nack
+    chart: nack/nack
+    version: 0.34.1+noa.1
+  - name: randomsecret
+    chart: portswigger-platform/randomsecret
+    version: 0.1.4

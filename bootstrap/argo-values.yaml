@@ -1,0 +1,10 @@
+configs:
+  params:
+    server.insecure: true
+
+networkPolicy:
+  create: false
+
+
+redis:
+  enabled: true 

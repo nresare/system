@@ -1,0 +1,17 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "extends": [
+    "config:recommended"
+  ],
+  "customManagers": [
+    {
+      "customType": "jsonata",
+      "fileFormat": "toml",
+      "managerFilePatterns": ["images.toml"],
+      "matchStrings": ["$.*.{ \"depName\":repo,\"currentValue\":version,\"datasource\":\"docker\",\"versioning\":\"semver-coerced\"}"]
+    }
+  ],
+  "helmfile": {
+    "managerFilePatterns": ["releases.yaml", "bootstrap/helmfile.yaml"]
+  }
+}

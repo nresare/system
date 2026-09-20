@@ -1,0 +1,28 @@
+[git]
+repo = "alpine/git"
+version = "v2.54.0"
+
+[hugo]
+repo = "floryn90/hugo"
+version = "0.165.0"
+
+[static-web-server]
+repo = "ghcr.io/static-web-server/static-web-server"
+version = "2.44"
+
+[acme-dns]
+repo = "nresare/acme-dns"
+version = "v1.1-distroless"
+
+[alpine]
+repo = "alpine"
+version = "3.24.1"
+
+[surrealdb]
+repo = "surrealdb/surrealdb"
+version = "v3.2.4"
+
+# rook only support up to v20 major version at this point
+[ceph]
+repo = "quay.io/ceph/ceph"
+version = "v20.2.4"

@@ -1,0 +1,28 @@
+[project]
+name = "berries-config-plugins"
+version = "0.1.0"
+requires-python = ">=3.12"
+dependencies = [
+    "manifest-builder",
+]
+
+[dependency-groups]
+dev = [
+    "pytest",
+    "ruff",
+    "ty",
+]
+
+[tool.pytest.ini_options]
+pythonpath = ["."]
+testpaths = ["tests"]
+
+[tool.ruff.lint.per-file-ignores]
+# Config blocks consistently report malformed user configuration as ValueError.
+"helm.py" = ["TRY004"]
+"simple.py" = ["TRY004"]
+"website.py" = ["TRY004"]
+
+[[tool.uv.index]]
+name = "repo.noa.re"
+url = "https://repo.noa.re"

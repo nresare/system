@@ -1,0 +1,23 @@
+# rook-ceph operator chart values
+
+#crds:
+#  enabled: true
+
+csi:
+  installCsiOperator: true
+  cephcsi:
+    tag: v3.17.1
+
+
+enableDiscoveryDaemon: true
+
+logLevel: INFO
+
+resources:
+  requests:
+    cpu: 100m
+    memory: 128Mi
+  limits:
+    memory: 512Mi
+
+currentNamespaceOnly: false
