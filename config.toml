@@ -45,3 +45,6 @@ release = "grafana-operator"
 extra-resources = "grafana/extra"
 values = "grafana/values.yaml"
 
+[[helm]]
+namespace = "kubelet-csr-approver"
+release = "kubelet-csr-approver"

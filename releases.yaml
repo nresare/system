@@ -34,6 +34,8 @@ repositories:
   - name: portswigger-platform
     oci: true
     url: public.ecr.aws/portswigger-platform/charts
+  - name: kubelet-csr-approver
+    url: https://postfinance.github.io/kubelet-csr-approver
 
 releases:
   - name: cert-manager
@@ -93,3 +95,6 @@ releases:
   - name: randomsecret
     chart: portswigger-platform/randomsecret
     version: 0.1.4
+  - name: kubelet-csr-approver
+    chart: kubelet-csr-approver/kubelet-csr-approver
+    version: 1.2.15
