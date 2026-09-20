@@ -77,4 +77,4 @@ name = "k8s.noa.re"
 namespace = "jwksproxy"
 image = "nresare/jwksproxy"
 replicas = 2
-config = { "/config/jwksproxy.toml" = "jwksproxy.toml" }
+config = { "/config/jwksproxy.toml" = "jwksproxy/jwksproxy.toml" }
