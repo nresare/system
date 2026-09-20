@@ -75,6 +75,6 @@ config = {"/config/idmouse.toml" = "idmouse/idmouse.toml"}
 [[website]]
 name = "k8s.noa.re"
 namespace = "jwksproxy"
-image = "nresare/jwksproxy"
-replicas = 2
+image = "nresare/jwksproxy:0.2.0"
+replicas = 1
 config = { "/config/jwksproxy.toml" = "jwksproxy/jwksproxy.toml" }
