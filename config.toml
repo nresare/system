@@ -18,3 +18,13 @@ extra-resources = "rook-ceph/extra"
 namespace = "acme-dns"
 source = "acme-dns/manifests"
 config = {"/etc/acme-dns/config.cfg" = "acme-dns/config.cfg"}
+
+[[helm]]
+namespace = "cert-manager"
+release = "cert-manager"
+values = "cert-manager/values.yaml"
+extra-resources = "cert-manager/extra"
+
+[[helm]]
+namespace = "cert-manager"
+release = "trust-manager"

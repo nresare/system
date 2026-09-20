@@ -1,0 +1,18 @@
+apiVersion: cert-manager.io/v1
+kind: ClusterIssuer
+metadata:
+  name: letsencrypt
+spec:
+  acme:
+    email: noa@resare.com
+    privateKeySecretRef:
+      name: letsenrypt-account-key
+    server: https://acme-v02.api.letsencrypt.org/directory
+    solvers:
+      - dns01:
+          acmeDNS:
+            accountSecretRef:
+              key: acmedns.json
+              name: acme-dns
+            host: http://acme-dns.acme-dns.svc.cluster.local
+          cnameStrategy: Follow

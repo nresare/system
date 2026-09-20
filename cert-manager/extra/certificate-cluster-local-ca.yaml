@@ -1,0 +1,23 @@
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: cluster-local-ca
+  namespace: cert-manager
+spec:
+  commonName: berries cluster-local CA
+  duration: 87600h
+  isCA: true
+  issuerRef:
+    name: cluster-local-selfsigned
+    kind: ClusterIssuer
+    group: cert-manager.io
+  privateKey:
+    algorithm: ECDSA
+    size: 256
+    rotationPolicy: Never
+  renewBefore: 8760h
+  secretName: cluster-local-ca
+  usages:
+    - cert sign
+    - crl sign
+    - digital signature
