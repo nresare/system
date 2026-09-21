@@ -1,5 +1,5 @@
 roles: app,discovery
-kubeClusterName: berries
+kubeClusterName: fruktsallad
 proxyAddr: teleport.noa.re:443
 teleportClusterName: teleport.noa.re
 joinParams:
