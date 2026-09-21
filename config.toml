@@ -95,3 +95,14 @@ AWS_REGION = "eu-west-2"
 AWS_ENDPOINT_URL = "http://rook-ceph-rgw-fruktsallad.rook-ceph.svc"
 AWS_ROLE_ARN = "arn:aws:iam:::role/reposnake"
 AWS_WEB_IDENTITY_TOKEN_FILE = "/var/run/secrets/tokens/sts.amazonaws.com"
+
+[[helm]]
+namespace = "teleport-cluster"
+release = "teleport-cluster"
+values = "teleport/cluster-values.yaml"
+extra-resources = "teleport/extra"
+
+[[helm]]
+namespace = "teleport"
+release = "teleport-kube-agent"
+values = "teleport/agent-values.yaml"

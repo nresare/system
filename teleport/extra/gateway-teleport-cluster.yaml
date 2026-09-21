@@ -1,0 +1,21 @@
+apiVersion: gateway.networking.k8s.io/v1
+kind: Gateway
+metadata:
+  name: teleport-cluster
+  annotations:
+    noa-was-here: yup
+spec:
+  gatewayClassName: eg
+  listeners:
+  - name: web
+    hostname: teleport.noa.re
+    protocol: TLS
+    port: 443
+    tls:
+      mode: Passthrough
+  - name: wildcard
+    hostname: "*.teleport.noa.re"
+    protocol: TLS
+    port: 443
+    tls:
+      mode: Passthrough

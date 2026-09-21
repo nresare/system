@@ -1,0 +1,12 @@
+roles: app,discovery
+kubeClusterName: berries
+proxyAddr: teleport.noa.re:443
+teleportClusterName: teleport.noa.re
+joinParams:
+  method: kubernetes
+  tokenName: kubernetes-token
+kubernetesDiscovery:
+  - types: ["app"]
+    namespaces: ["*"]
+    labels:
+      noa.re/discover: enabled
