@@ -10,4 +10,4 @@ highAvailability:
     issuerName: letsencrypt
     issuerKind: ClusterIssuer
 persistence:
-  volumeSize: 1GiB
+  volumeSize: 1Gi
