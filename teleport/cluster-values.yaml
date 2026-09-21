@@ -9,5 +9,5 @@ highAvailability:
     enabled: true
     issuerName: letsencrypt
     issuerKind: ClusterIssuer
-persistnce:
+persistence:
   volumeSize: 1GiB
