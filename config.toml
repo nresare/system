@@ -106,3 +106,14 @@ extra-resources = "teleport/extra"
 namespace = "teleport"
 release = "teleport-kube-agent"
 values = "teleport/agent-values.yaml"
+
+[[website]]
+name = "id.noa.re"
+namespace = "idelephant"
+replicas = 1
+args = ["-c", "/config/idelephant.toml"]
+custom-token-audiences = ["idmouse"]
+external-secrets = [
+    "/email-password",
+]
+config = {"/config/idelephant.toml"="idelephant/idelephant.toml"}
