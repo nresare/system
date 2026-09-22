@@ -110,6 +110,7 @@ values = "teleport/agent-values.yaml"
 [[website]]
 name = "id.noa.re"
 namespace = "idelephant"
+image = "repo.noa.re/idelephant:0.2.3-0e988f9d"
 replicas = 1
 args = ["-c", "/config/idelephant.toml"]
 custom-token-audiences = ["idmouse"]
