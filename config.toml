@@ -108,18 +108,6 @@ release = "teleport-kube-agent"
 values = "teleport/agent-values.yaml"
 
 [[website]]
-name = "id.noa.re"
-namespace = "idelephant"
-image = "repo.noa.re/idelephant:0.2.3-bee62d0c"
-replicas = 1
-args = ["-c", "/config/idelephant.toml"]
-custom-token-audiences = ["idmouse"]
-external-secrets = [
-    "/email-password",
-]
-config = {"/config/idelephant.toml"="idelephant/idelephant.toml"}
-
-[[website]]
 name = "relcoord.noa.re"
 namespace = "relcoord"
 replicas = 2
