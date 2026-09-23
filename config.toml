@@ -118,3 +118,21 @@ external-secrets = [
     "/email-password",
 ]
 config = {"/config/idelephant.toml"="idelephant/idelephant.toml"}
+
+[[website]]
+name = "relcoord.noa.re"
+namespace = "relcoord"
+replicas = 2
+image = "public.ecr.aws/portswigger-platform/relcoord:0.2.0-83fb2305"
+config = {"/config/relcoord.toml" = "relcoord/relcoord.toml"}
+custom-token-audiences = ["idmouse", "idcat.noa.re"]
+
+[[website]]
+name = "idcat.noa.re"
+namespace = "idcat"
+image = "public.ecr.aws/portswigger-platform/idcat:934b43e7"
+replicas = 2
+args = ["--debug"]
+external-secrets = ["/app-keys"]
+config = { "/config/idcat.toml" = "idcat/idcat.toml" }
+custom-token-audiences = ["nats"]

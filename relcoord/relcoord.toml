@@ -1,0 +1,33 @@
+listen = "0.0.0.0"
+port = 8080
+system-repository = "https://github.com/nresare/system"
+
+[persistence]
+uri = "ws://surrealdb.surrealdb.svc:8000"
+namespace = "default"
+database = "relcoord"
+
+[persistence.idmouse]
+url = "http://idmouse.idmouse.svc/token/relcoord"
+token-path = "/var/run/secrets/tokens/idmouse"
+
+[[role]]
+name = "manual"
+audience = "relcoord.noa.re"
+issuer = "https://k8s.noa.re"
+claims = { sub = "system:serviceaccount:default:default" }
+
+[[role]]
+name = "buildkite"
+audience = "relcoord.noa.re"
+issuer = "https://agent.buildkite.com"
+claims = {organization_slug="nresare"}
+
+[idcat]
+endpoint = "https://idcat.noa.re"
+github-app = "nresare-buildsystem"
+token-path = "/var/run/secrets/tokens/idcat.noa.re"
+
+[[output]]
+name = "berries"
+repository = "https://github.com/nresare/fruktsallad"
