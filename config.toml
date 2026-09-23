@@ -83,7 +83,7 @@ config = { "/config/jwksproxy.toml" = "jwksproxy/jwksproxy.toml" }
 name = "repo.noa.re"
 replicas = 2
 namespace = "reposnake"
-image = "nresare/reposnake"
+image = "nresare/reposnake:0.2.1"
 args = ["-c", "/config/reposnake.toml"]
 config = { "/config/reposnake.toml" = "reposnake/reposnake.toml" }
 custom-token-audiences = ["idmouse", "sts.amazonaws.com"]
