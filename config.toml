@@ -124,3 +124,7 @@ args = ["--debug"]
 external-secrets = ["/app-keys"]
 config = { "/config/idcat.toml" = "idcat/idcat.toml" }
 custom-token-audiences = ["nats"]
+
+[[helm]]
+namespace = "randomsecret"
+release = "randomsecret"
