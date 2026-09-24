@@ -1,4 +1,9 @@
 [[helm]]
+namespace = "kube-system"
+release = "cilium"
+values = "cilium/values.yaml"
+
+[[helm]]
 namespace = "argo"
 release = "argocd"
 values = "argo/values.yaml"
@@ -128,3 +133,4 @@ custom-token-audiences = ["nats"]
 [[helm]]
 namespace = "randomsecret"
 release = "randomsecret"
+

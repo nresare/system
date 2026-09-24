@@ -36,6 +36,9 @@ repositories:
     url: public.ecr.aws/portswigger-platform/charts
   - name: kubelet-csr-approver
     url: https://postfinance.github.io/kubelet-csr-approver
+  - name: cilium
+    url: quay.io/cilium/charts
+    oci: true
 
 releases:
   - name: cert-manager
@@ -98,3 +101,6 @@ releases:
   - name: kubelet-csr-approver
     chart: kubelet-csr-approver/kubelet-csr-approver
     version: 1.2.15
+  - name: cilium
+    chart: cilium/cilium
+    verison: 1.20.1
