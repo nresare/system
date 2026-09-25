@@ -1,0 +1,16 @@
+apiVersion: cilium.io/v2
+kind: CiliumBGPPeerConfig
+metadata:
+  name: nadia
+spec:
+  families:
+    - afi: ipv4
+      safi: unicast
+      advertisements:
+        matchLabels:
+          advertise: fruktsallad-pod-cidrs
+    - afi: ipv6
+      safi: unicast
+      advertisements:
+        matchLabels:
+          advertise: fruktsallad-pod-cidrs

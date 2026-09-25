@@ -1,0 +1,9 @@
+apiVersion: cilium.io/v2
+kind: CiliumBGPAdvertisement
+metadata:
+  name: fruktsallad-pod-cidrs
+  labels:
+    advertise: fruktsallad-pod-cidrs
+spec:
+  advertisements:
+    - advertisementType: PodCIDR
