@@ -20,7 +20,7 @@ version = "3.24.2"
 
 [surrealdb]
 repo = "surrealdb/surrealdb"
-version = "v3.2.4"
+version = "v3.3"
 
 # rook only support up to v20 major version at this point
 [ceph]
