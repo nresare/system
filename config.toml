@@ -2,6 +2,7 @@
 namespace = "kube-system"
 release = "cilium"
 values = "cilium/values.yaml"
+extra-resources = "cilium/extra"
 
 [[helm]]
 namespace = "argo"

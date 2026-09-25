@@ -1,0 +1,15 @@
+apiVersion: cilium.io/v2
+kind: CiliumBGPClusterConfig
+metadata:
+  name: fruktsallad
+spec:
+  nodeSelector: {}
+  bgpInstances:
+    - name: fruktsallad
+      localASN: 64513
+      peers:
+        - name: nadia
+          peerASN: 64512
+          peerAddress: "192.168.168.1"
+          peerConfigRef:
+            name: nadia
