@@ -3,6 +3,7 @@ kind: CiliumBGPPeerConfig
 metadata:
   name: nadia
 spec:
+  authSecretRef: nadia-bgp-auth
   families:
     - afi: ipv4
       safi: unicast
