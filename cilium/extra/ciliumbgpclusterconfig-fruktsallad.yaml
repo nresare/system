@@ -8,8 +8,13 @@ spec:
     - name: fruktsallad
       localASN: 64513
       peers:
-        - name: nadia
+        - name: nadia-ipv4
           peerASN: 64512
           peerAddress: "192.168.168.1"
           peerConfigRef:
             name: nadia
+        - name: nadia-ipv6
+          peerASN: 64512
+          peerAddress: "2a01:4b00:ae0a:5000:2e0:67ff:fe21:6494"
+          peerConfigRef:
+            name: nadia-ipv6
