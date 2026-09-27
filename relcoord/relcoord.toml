@@ -18,6 +18,16 @@ issuer = "https://k8s.noa.re"
 claims = { sub = "system:serviceaccount:default:default" }
 
 [[role]]
+name = "buildkite-system"
+audience = "relcoord.noa.re"
+issuer = "https://agent.buildkite.com"
+allow_system = true
+
+[role.claims]
+organization_slug = "nresare"
+pipeline_slug = "system"
+
+[[role]]
 name = "buildkite"
 audience = "relcoord.noa.re"
 issuer = "https://agent.buildkite.com"
