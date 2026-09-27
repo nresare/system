@@ -6,6 +6,18 @@ server:
     labels:
       noa.re/discover: enabled
 configs:
+  cm:
+    oidc.config: |
+      name: idelephant
+      issuer: https://id.noa.re
+      clientId: argo-fruktsallad
+      clientSecret: ignored
+      enablePKCEAuthentication: true
+      requestedScopes:
+       - openid
+       - profile
+       - email
+
   params:
     server.insecure: true
     #controller.diff.server.side: true
