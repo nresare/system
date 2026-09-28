@@ -2,6 +2,7 @@
 # SPDX-FileCopyrightText: The manifest-builder contributors
 """Website manifest generation from plugin-owned Mustache templates."""
 
+import re
 from collections.abc import Sequence
 from dataclasses import dataclass
 from pathlib import Path
@@ -496,7 +497,18 @@ def generate_website(
     if images:
         context.update(images)
     if config.image:
-        context["image"] = config.image
+        image_reference = re.fullmatch(
+            r"\{\{\s*([a-zA-Z_][a-zA-Z_0-9]*)\s*\}\}", config.image
+        )
+        if image_reference:
+            image_name = image_reference.group(1)
+            if not images or image_name not in images:
+                raise ValueError(
+                    f"Image reference '{image_name}' for '{config.name}' is not defined in images.toml"
+                )
+            context["image"] = images[image_name]
+        else:
+            context["image"] = config.image
     if config.args:
         context["args"] = config.args
     if config.hugo_repo:

@@ -22,6 +22,10 @@ version = "3.24.2"
 repo = "surrealdb/surrealdb"
 version = "v3.2.4"
 
+[relcoord]
+repo = "public.ecr.aws/portswigger-platform/relcoord"
+version = "0.2.0-ea962458"
+
 # rook only support up to v20 major version at this point
 [ceph]
 repo = "quay.io/ceph/ceph"

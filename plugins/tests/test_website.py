@@ -417,6 +417,43 @@ def test_generate_website_image_parameter_available_in_template(tmp_path: Path) 
     assert doc["spec"]["template"]["spec"]["containers"][0]["image"] == "nginx:1.20"
 
 
+def test_generate_website_image_reference_from_images_toml(tmp_path: Path) -> None:
+    """An image reference in config resolves before the YAML template is parsed."""
+    templates_dir = tmp_path / "templates"
+    templates_dir.mkdir()
+    (templates_dir / "deployment.yaml").write_text(
+        "apiVersion: apps/v1\nkind: Deployment\nmetadata:\n  name: web\nspec:\n  template:\n    spec:\n      containers:\n      - image: {{image}}\n"
+    )
+    config = WebsiteConfig(
+        name="relcoord.noa.re",
+        namespace="relcoord",
+        image="{{relcoord_image}}",
+    )
+    paths = generate_website(
+        config,
+        tmp_path / "output",
+        images={"relcoord_image": "public.ecr.aws/example/relcoord:0.2.0"},
+        _templates_override=templates_dir,
+    )
+
+    (path,) = paths
+    doc = yaml.safe_load(path.read_text())
+    assert doc["spec"]["template"]["spec"]["containers"][0]["image"] == (
+        "public.ecr.aws/example/relcoord:0.2.0"
+    )
+
+
+def test_generate_website_unknown_image_reference(tmp_path: Path) -> None:
+    config = WebsiteConfig(
+        name="relcoord.noa.re",
+        namespace="relcoord",
+        image="{{relcoord_image}}",
+    )
+
+    with pytest.raises(ValueError, match="relcoord_image.*images.toml"):
+        generate_website(config, tmp_path / "output", images={})
+
+
 def test_generate_website_args_string_parameter_available_in_template(
     tmp_path: Path,
 ) -> None:
