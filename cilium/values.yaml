@@ -19,3 +19,12 @@ ipam:
 
 bgpControlPlane:
   enabled: true
+
+hubble:
+  tls:
+    auto:
+      method: certmanager
+      certManagerIssuerRef:
+        group: cert-manager.io
+        kind: ClusterIssuer
+        name: cluster-local
