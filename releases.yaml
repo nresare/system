@@ -61,7 +61,7 @@ releases:
     version: 1.9.1
   - name: envoy-gateway-crds
     chart: envoyproxy/gateway-crds-helm
-    version: 1.9.1
+    version: 1.9.2
   - name: metrics-server
     chart: metrics-server/metrics-server
     version: 3.14.0
