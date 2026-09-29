@@ -1,3 +1,5 @@
+global:
+  domain: argo.teleport.noa.re
 server:
   service:
     annotations:
@@ -8,7 +10,7 @@ server:
 configs:
   cm:
     oidc.config: |
-      name: idelephant
+      name: idElephant
       issuer: https://id.noa.re
       clientId: argo-fruktsallad
       clientSecret: ignored
