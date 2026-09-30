@@ -123,6 +123,20 @@ namespace = "loki"
 release = "loki"
 values = "loki/values.yaml"
 
+[[helm]]
+namespace = "alloy"
+release = "alloy"
+values = "alloy/metrics.yaml"
+config = {"metrics.cfg" = "alloy/metrics.cfg"}
+extra-resources = "alloy/metrics-extra"
+
+[[helm]]
+namespace = "alloy"
+name-override = "alloy-log-forwarder"
+release = "alloy"
+values = "alloy/log-forwarder.yaml"
+config = {"log-forwarder.cfg" = "alloy/log-forwarder.cfg"}
+
 [[website]]
 name = "relcoord.noa.re"
 namespace = "relcoord"
