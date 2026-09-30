@@ -1,0 +1,101 @@
+# https://grafana.com/docs/loki/latest/setup/install/helm/install-monolithic/
+
+# The config reload sidecar fails due to
+# certificate verify failed: CA cert does not include key usage extension
+# but since we don't use this, let's disable the sidecar
+sidecar:
+  rules:
+    enabled: false
+# the default values tries to allocate 8gb for the chunks cache. Which we obviously don't have
+chunksCache:
+  allocatedMemory: 850
+
+
+defaults:
+  extraEnv:
+    - name: AWS_ROLE_ARN
+      value: arn:aws:iam:::role/loki
+    - name: AWS_WEB_IDENTITY_TOKEN_FILE
+      value: /var/run/secrets/tokens/sts.amazonaws.com
+    - name: AWS_REGION
+      value: us-east-1
+    - name: AWS_ENDPOINT_URL_STS
+      value: http://rook-ceph-rgw-berries.rook-ceph.svc
+  extraVolumes:
+    - name: tokens
+      projected:
+        sources:
+          - serviceAccountToken:
+              path: sts.amazonaws.com
+              audience: sts.amazonaws.com
+              expirationSeconds: 3600
+  extraVolumeMounts:
+    - name: tokens
+      mountPath: /var/run/secrets/tokens
+      readOnly: true
+
+
+
+loki:
+  commonConfig:
+    replication_factor: 3
+  schemaConfig:
+    configs:
+      - from: "2024-04-01"
+        store: tsdb
+        object_store: s3
+        schema: v13
+        index:
+          prefix: loki_index_
+          period: 24h
+  pattern_ingester:
+    enabled: true
+  limits_config:
+    allow_structured_metadata: true
+    volume_enabled: true
+  rulerConfig:
+    enable_api: true
+  storage:
+    bucketNames:
+      chunks: loki-data
+      ruler: loki-ruler
+    type: s3
+    s3:
+      endpoint: rook-ceph-rgw-berries.rook-ceph.svc:80
+      insecure: true
+      region: us-east-1
+      s3ForcePathStyle: true
+
+deploymentMode: Monolithic
+
+singleBinary:
+  replicas: 3
+
+# Zero out replica counts of other deployment modes
+backend:
+  replicas: 0
+read:
+  replicas: 0
+write:
+  replicas: 0
+
+ingester:
+  replicas: 0
+querier:
+  replicas: 0
+queryFrontend:
+  replicas: 0
+queryScheduler:
+  replicas: 0
+distributor:
+  replicas: 0
+compactor:
+  replicas: 0
+indexGateway:
+  replicas: 0
+bloomPlanner:
+  replicas: 0
+bloomBuilder:
+  replicas: 0
+bloomGateway:
+  replicas: 0
