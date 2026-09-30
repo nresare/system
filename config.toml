@@ -113,6 +113,16 @@ namespace = "teleport"
 release = "teleport-kube-agent"
 values = "teleport/agent-values.yaml"
 
+[[helm]]
+namespace = "mimir"
+release = "mimir"
+values = "mimir/values.yaml"
+
+[[helm]]
+namespace = "loki"
+release = "loki"
+values = "loki/values.yaml"
+
 [[website]]
 name = "relcoord.noa.re"
 namespace = "relcoord"
