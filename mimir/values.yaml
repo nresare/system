@@ -18,9 +18,9 @@ global:
     - name: AWS_REGION
       value: us-east-1
     - name: AWS_ENDPOINT_URL
-      value: http://rook-ceph-rgw-berries.rook-ceph.svc
+      value: http://rook-ceph-rgw-fruktsallad.rook-ceph.svc
     - name: AWS_ENDPOINT_URL_STS
-      value: http://rook-ceph-rgw-berries.rook-ceph.svc
+      value: http://rook-ceph-rgw-fruktsallad.rook-ceph.svc
   extraVolumes:
     - name: tokens
       projected:
@@ -41,7 +41,7 @@ mimir:
       storage:
         backend: "s3"
         s3:
-          endpoint: rook-ceph-rgw-berries.rook-ceph.svc:80
+          endpoint: rook-ceph-rgw-fruktsallad.rook-ceph.svc:80
           bucket_name: mimir-data
           region: us-east-1
           insecure: true

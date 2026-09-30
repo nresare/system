@@ -20,7 +20,7 @@ defaults:
     - name: AWS_REGION
       value: us-east-1
     - name: AWS_ENDPOINT_URL_STS
-      value: http://rook-ceph-rgw-berries.rook-ceph.svc
+      value: http://rook-ceph-rgw-fruktsallad.rook-ceph.svc
   extraVolumes:
     - name: tokens
       projected:
@@ -61,7 +61,7 @@ loki:
       ruler: loki-ruler
     type: s3
     s3:
-      endpoint: rook-ceph-rgw-berries.rook-ceph.svc:80
+      endpoint: rook-ceph-rgw-fruktsallad.rook-ceph.svc:80
       insecure: true
       region: us-east-1
       s3ForcePathStyle: true
