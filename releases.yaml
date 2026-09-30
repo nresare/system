@@ -73,7 +73,7 @@ releases:
     version: 6.2.0
   - name: alloy
     chart: grafana/alloy
-    version: 1.12.1
+    version: 1.13.0
   - name: loki
     chart: grafana-community/loki
     version: 18.13.0
