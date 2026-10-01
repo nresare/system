@@ -137,6 +137,32 @@ release = "alloy"
 values = "alloy/log-forwarder.yaml"
 config = {"log-forwarder.cfg" = "alloy/log-forwarder.cfg"}
 
+[[helm]]
+namespace = "nats"
+release = "nats"
+values = "nats/values.yaml"
+
+[[helm]]
+namespace = "nats"
+release = "nack"
+values = "nats/nack-values.yaml"
+extra-resources = "nats/extra"
+custom-token-audiences = ["nats"]
+
+[[simple]]
+name = "nats-aws-auth"
+namespace = "nats"
+replicas = 1
+image = "nresare/nats-aws-auth:local-key-storage"
+external-secret = "/keys"
+args = [
+    "--url=nats://nats.nats",
+    "--auth-backend=k8s-oidc",
+    "--jwt-issuer=https://k8s.noa.re",
+    "--key-storage=directory",
+    "--key-dir=/keys"
+]
+
 [[website]]
 name = "relcoord.noa.re"
 namespace = "relcoord"
