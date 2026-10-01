@@ -1,0 +1,12 @@
+apiVersion: jetstream.nats.io/v1beta2
+kind: Consumer
+metadata:
+  name: argo-poker
+spec:
+  streamName: github-events
+  durableName: argo-poker
+  filterSubjects: 
+    - idcat.github.events.push.nresare.berries-manifests
+  ackPolicy: explicit
+  deliverPolicy: last
+  account: app
