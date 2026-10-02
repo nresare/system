@@ -1,4 +1,7 @@
 jetstream:
+  image:
+    repository: nresare/jetstream-controller
+    tag: v0.24.0-noa.1
   nats:
     url: nats://nats.nats.svc
   controlLoop: true
