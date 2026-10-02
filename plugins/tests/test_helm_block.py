@@ -1681,3 +1681,35 @@ def test_generate_helm_manifests_renders_extra_resources_with_variables(
     content = written[0].read_text()
     assert "example.com" in content
     assert "{{domain}}" not in content
+
+
+@pytest.mark.parametrize("skip_crds", [False, True])
+def test_skip_crds_filters_chart_crds(tmp_path: Path, skip_crds: bool) -> None:
+    config_file = write_toml(
+        tmp_path,
+        "config.toml",
+        f'''
+        [[helm]]
+        name = "my-chart"
+        namespace = "default"
+        chart = "{tmp_path}"
+        skip-crds = {str(skip_crds).lower()}
+        ''',
+    )
+    del config_file
+    config = only_config(load_test_configs(tmp_path))
+    manifests = (
+        NAMESPACED_YAML
+        + "---\n"
+        + (
+            "apiVersion: apiextensions.k8s.io/v1\n"
+            "kind: CustomResourceDefinition\nmetadata:\n  name: widgets.example.com\n"
+        )
+    )
+    with mock.patch("helm.run_helm_template", return_value=manifests):
+        paths = _generate_helm_manifests(
+            config, tmp_path / "output", tmp_path / "charts"
+        )
+    kinds = {yaml.safe_load(path.read_text())["kind"] for path in paths}
+    assert ("CustomResourceDefinition" in kinds) is not skip_crds
+    assert "Deployment" in kinds

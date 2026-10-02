@@ -145,9 +145,14 @@ values = "nats/values.yaml"
 [[helm]]
 namespace = "nats"
 release = "nack"
+skip-crds = true
 values = "nats/nack-values.yaml"
 extra-resources = "nats/extra"
 custom-token-audiences = ["nats"]
+
+[[copy]]
+namespace = "nats"
+source = "nats/crds"
 
 [[simple]]
 name = "nats-aws-auth"
