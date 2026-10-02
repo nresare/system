@@ -28,9 +28,6 @@ repositories:
     oci: true
   - name: nats
     url: https://nats-io.github.io/k8s/helm/charts/
-  - name: nack
-    url: repo.noa.re
-    oci: true
   - name: portswigger-platform
     oci: true
     url: public.ecr.aws/portswigger-platform/charts
@@ -93,8 +90,8 @@ releases:
     chart: nats/nats
     version: 2.14.6
   - name: nack
-    chart: nack/nack
-    version: 0.34.1+noa.1
+    chart: nats/nack
+    version: 0.34.1
   - name: randomsecret
     chart: portswigger-platform/randomsecret
     version: 0.1.4

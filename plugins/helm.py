@@ -57,6 +57,7 @@ class ChartConfig:
     config: dict[str, Path] | None = None  # ConfigMap key -> resolved local path
     name_override: str | None = None  # optional release name passed to helm template
     custom_token_audiences: list[str] | None = None
+    skip_crds: bool = False
 
 
 def validate_chart_config(config: ChartConfig, repo_root: Path) -> None:
@@ -202,6 +203,7 @@ class HelmBlock(ConfigBlock[ChartConfig]):
                     config=config.config,
                     name_override=config.name_override,
                     custom_token_audiences=config.custom_token_audiences,
+                    skip_crds=config.skip_crds,
                 )
             )
 
@@ -250,10 +252,14 @@ def _parse_chart_config(
             "name-override",
             "custom-token-audience",
             "custom-token-audiences",
+            "skip-crds",
         },
         source_file,
         table_index,
     )
+
+    if not isinstance(data.get("skip-crds", False), bool):
+        raise ValueError(f"'skip-crds' must be a boolean in {source_file}")
 
     has_release = "release" in data
     has_chart = "chart" in data
@@ -298,6 +304,7 @@ def _parse_chart_config(
             config=config_files,
             name_override=data.get("name-override"),
             custom_token_audiences=custom_token_audiences,
+            skip_crds=data.get("skip-crds", False),
         )
 
     if "name" not in data:
@@ -316,6 +323,7 @@ def _parse_chart_config(
         config=config_files,
         name_override=data.get("name-override"),
         custom_token_audiences=custom_token_audiences,
+        skip_crds=data.get("skip-crds", False),
     )
 
 
@@ -454,6 +462,16 @@ def _generate_helm_manifests(
             chart=chart_path,
             namespace=config.namespace,
             values_files=values_paths,
+        )
+
+    # Exclude chart CRDs before adding separately managed extra resources.
+    if config.skip_crds:
+        manifest_content = dump_all_yaml(
+            [
+                doc
+                for doc in load_all_yaml(manifest_content)
+                if doc.get("kind") != "CustomResourceDefinition"
+            ]
         )
 
     if config.custom_token_audiences:
