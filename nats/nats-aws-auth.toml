@@ -4,3 +4,11 @@ legacy-serviceaccount-permissions = false
 subject = "system:serviceaccount:nats:jetstream-controller"
 allowed-pub-subjects = ["$JS.ACK.>", "$JS.API.>"]
 allowed-sub-subjects = ["$JS.API.>"]
+
+[[permission]]
+subject = "system:serviceaccount:webhook-poker:default"
+allowed-pub-subjects = [
+    "$JS.API.CONSUMER.INFO.github-events.argo-poker",
+    "$JS.API.CONSUMER.MSG.NEXT.github-events.argo-poker,",
+    "$JS.ACK.github-events.argo-poker.>",
+]
