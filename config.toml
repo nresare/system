@@ -193,7 +193,7 @@ image = "public.ecr.aws/portswigger-platform/idcat:934b43e7"
 replicas = 2
 args = ["--debug"]
 external-secrets = ["/app-keys"]
-random-secret = "token"
+random-secret = "webhook"
 config = { "/config/idcat.toml" = "idcat/idcat.toml" }
 custom-token-audiences = ["nats"]
 
