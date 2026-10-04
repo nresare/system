@@ -9,6 +9,6 @@ allowed-sub-subjects = ["$JS.API.>"]
 subject = "system:serviceaccount:webhook-poker:default"
 allowed-pub-subjects = [
     "$JS.API.CONSUMER.INFO.github-events.argo-poker",
-    "$JS.API.CONSUMER.MSG.NEXT.github-events.argo-poker,",
+    "$JS.API.CONSUMER.MSG.NEXT.github-events.argo-poker",
     "$JS.ACK.github-events.argo-poker.>",
 ]
