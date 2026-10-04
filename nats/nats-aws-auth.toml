@@ -1,0 +1,6 @@
+legacy-serviceaccount-permissions = false
+
+[[permission]]
+subject = "system:serviceaccount:nats:jetstream-controller"
+allowed-pub-subjects = ["$JS.ACK.>", "$JS.API.>"]
+allowed-sub-subjects = ["$JS.API.>"]
