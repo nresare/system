@@ -5,6 +5,3 @@ jetstream:
   nats:
     url: nats://nats.nats.svc
   controlLoop: true
-serviceAccountAnnotations:
-  nats.io/allowed-pub-subjects: "$JS.ACK.>,$JS.API.>"
-  nats.io/allowed-sub-subjects: "$JS.API.>"

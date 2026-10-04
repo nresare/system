@@ -158,12 +158,14 @@ source = "nats/crds"
 name = "nats-aws-auth"
 namespace = "nats"
 replicas = 1
-image = "nresare/nats-aws-auth:local-key-storage"
+image = "nresare/nats-aws-auth:v2026.02.19-1de79ca-12-gafc222e"
+config = {"/config/nats-aws-auth.toml" = "nats/nats-aws-auth.toml"}
 external-secret = "/keys"
 args = [
     "--url=nats://nats.nats",
     "--auth-backend=k8s-oidc",
     "--jwt-issuer=https://k8s.noa.re",
+    "--config=/config/nats-aws-auth.toml",
     "--key-storage=directory",
     "--key-dir=/keys"
 ]
