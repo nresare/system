@@ -6,7 +6,7 @@ spec:
   streamName: github-events
   durableName: argo-poker
   filterSubjects: 
-    - idcat.github.events.push.nresare.berries-manifests
+    - idcat.github.events.push.nresare.fruktsallad
   ackPolicy: explicit
   deliverPolicy: last
   account: app

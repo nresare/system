@@ -24,10 +24,10 @@ name = "nresare-buildsystem"
 allowed-roles = ["buildkite", "relcoord", "manual"]
 app-id = 3511383
 secret-key = "nresare-buildsystem.key"
-#webhook-target = "nats"
-#webhook-validation-secret-file = "/random-secrets/webhook"
+webhook-target = "nats"
+webhook-validation-secret-file = "/random-secrets/webhook"
 
-#[nats]
-#endpoint = "nats://nats.nats.svc"
-#subject-base = "idcat.github.events"
-#token-path = "/var/run/secrets/tokens/nats"
+[nats]
+endpoint = "nats://nats.nats.svc"
+subject-base = "idcat.github.events"
+token-path = "/var/run/secrets/tokens/nats"
