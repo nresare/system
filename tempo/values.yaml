@@ -1,0 +1,56 @@
+# Single-binary Tempo, using the same Ceph S3 and STS setup as Mimir and Loki.
+replicas: 1
+
+tempo:
+  multitenancyEnabled: false
+  retention: 720h # 30 days
+  extraEnv:
+    - name: AWS_ROLE_ARN
+      value: arn:aws:iam:::role/tempo
+    - name: AWS_WEB_IDENTITY_TOKEN_FILE
+      value: /var/run/secrets/tokens/sts.amazonaws.com
+    - name: AWS_REGION
+      value: us-east-1
+    - name: AWS_ENDPOINT_URL_STS
+      value: http://rook-ceph-rgw-fruktsallad.rook-ceph.svc
+  extraVolumeMounts:
+    - name: tokens
+      mountPath: /var/run/secrets/tokens
+      readOnly: true
+  storage:
+    trace:
+      backend: s3
+      local: null
+      s3:
+        endpoint: rook-ceph-rgw-fruktsallad.rook-ceph.svc:80
+        bucket: tempo-data
+        region: us-east-1
+        insecure: true
+        forcepathstyle: true
+        native_aws_auth_enabled: true
+      wal:
+        path: /var/tempo/wal
+  receivers:
+    otlp:
+      protocols:
+        grpc:
+          endpoint: 0.0.0.0:4317
+        http:
+          endpoint: 0.0.0.0:4318
+
+extraVolumes:
+  - name: tokens
+    projected:
+      sources:
+        - serviceAccountToken:
+            path: sts.amazonaws.com
+            audience: sts.amazonaws.com
+            expirationSeconds: 3600
+
+persistence:
+  enabled: true
+  storageClassName: rook-ceph-block
+  size: 10Gi
+
+serviceMonitor:
+  enabled: true
