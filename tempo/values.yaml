@@ -11,7 +11,8 @@ tempo:
       value: /var/run/secrets/tokens/sts.amazonaws.com
     - name: AWS_REGION
       value: us-east-1
-    - name: AWS_ENDPOINT_URL_STS
+    # Tempo's MinIO credential provider reads this instead of AWS_ENDPOINT_URL_STS.
+    - name: TEST_IAM_ENDPOINT
       value: http://rook-ceph-rgw-fruktsallad.rook-ceph.svc
   extraVolumeMounts:
     - name: tokens
