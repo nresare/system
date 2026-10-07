@@ -74,6 +74,9 @@ releases:
   - name: loki
     chart: grafana-community/loki
     version: 18.13.7
+  - name: tempo
+    chart: grafana-community/tempo
+    version: 3.1.0
   - name: rook
     chart: rook/rook-ceph
     version: v1.20.8

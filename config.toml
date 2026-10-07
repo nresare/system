@@ -124,6 +124,11 @@ release = "loki"
 values = "loki/values.yaml"
 
 [[helm]]
+namespace = "tempo"
+release = "tempo"
+values = "tempo/values.yaml"
+
+[[helm]]
 namespace = "alloy"
 release = "alloy"
 values = "alloy/metrics.yaml"
