@@ -37,7 +37,7 @@ class WebsiteConfig:
 
     name: str
     namespace: str
-    tls: bool = False  # serve HTTPS on port 8080 with a cluster-local certificate
+    tls: bool = False  # serve HTTPS on port 8443 with a cluster-local certificate
     hugo_repo: str | None = None
     image: str | None = None
     args: str | list[str] | None = None
@@ -634,7 +634,7 @@ def generate_website(
             )
             for container in pod_spec.get("containers", []):
                 container.setdefault("ports", []).append(
-                    {"name": "https", "containerPort": 8080, "protocol": "TCP"}
+                    {"name": "https", "containerPort": 8443, "protocol": "TCP"}
                 )
                 container.setdefault("volumeMounts", []).append(
                     {"name": "tls", "mountPath": "/tls", "readOnly": True}
