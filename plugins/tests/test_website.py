@@ -1685,3 +1685,108 @@ def test_generate_website_zero_replicas(tmp_path: Path) -> None:
     (path,) = paths
     doc = yaml.safe_load(path.read_text())
     assert doc["spec"]["replicas"] == 0
+
+
+def test_website_namespaces_receive_cluster_local_trust(tmp_path: Path) -> None:
+    configs = [
+        WebsiteConfig(name="one.example.com", namespace="web"),
+        WebsiteConfig(name="two.example.com", namespace="web"),
+        WebsiteConfig(name="demo.example.com", namespace="demo"),
+    ]
+    output_dir = tmp_path / "output"
+    namespace_path = output_dir / "web" / "namespace-web.yaml"
+    namespace_path.parent.mkdir(parents=True)
+    namespace_path.write_text(
+        "apiVersion: v1\nkind: Namespace\nmetadata:\n  name: web\n"
+        "  labels:\n    owner: websites\n  annotations:\n    example.com/keep: yes\n"
+    )
+    block = WebsiteBlock(configs)
+    for _ in range(2):
+        paths = generate_manifests([block], output_dir, repo_root=tmp_path)
+        for namespace in ("web", "demo"):
+            path = output_dir / namespace / f"namespace-{namespace}.yaml"
+            assert path in paths
+            metadata = yaml.safe_load(path.read_text())["metadata"]
+            assert metadata["labels"]["trust"] == "cluster-local"
+            assert (
+                metadata["annotations"]["argocd.argoproj.io/sync-options"]
+                == "PruneLast=true"
+            )
+        metadata = yaml.safe_load(namespace_path.read_text())["metadata"]
+        assert metadata["labels"]["owner"] == "websites"
+        assert metadata["annotations"]["example.com/keep"] is True
+
+
+def test_cluster_local_bundle_targets_trusted_namespaces() -> None:
+    bundle_path = (
+        Path(__file__).parents[2] / "cert-manager/extra/bundle-cluster-local-ca.yaml"
+    )
+    bundle = yaml.safe_load(bundle_path.read_text())
+    assert bundle["spec"]["target"] == {
+        "configMap": {"key": "ca.crt"},
+        "namespaceSelector": {"matchLabels": {"trust": "cluster-local"}},
+    }
+
+
+def test_generate_website_tls_backend(tmp_path: Path) -> None:
+    config = WebsiteConfig(name="demo.example.com", namespace="demo", tls=True)
+    paths = generate_website(config, tmp_path / "output")
+    docs = {path.name: yaml.safe_load(path.read_text()) for path in paths}
+    certificate = docs["certificate-demo-example-com-internal.yaml"]["spec"]
+    assert certificate["issuerRef"]["name"] == "cluster-local"
+    assert certificate["dnsNames"] == ["demo-example-com.demo.svc"]
+    assert certificate["secretName"] == "demo-example-com-internal-tls"
+    policy = docs["backendtlspolicy-demo-example-com.yaml"]["spec"]
+    assert policy["targetRefs"] == [
+        {
+            "group": "",
+            "kind": "Service",
+            "name": "demo-example-com",
+            "sectionName": "https",
+        }
+    ]
+    assert policy["validation"] == {
+        "caCertificateRefs": [
+            {"group": "", "kind": "ConfigMap", "name": "cluster-local-ca"}
+        ],
+        "hostname": certificate["dnsNames"][0],
+    }
+    assert docs["service-demo-example-com.yaml"]["spec"]["ports"] == [
+        {
+            "name": "https",
+            "appProtocol": "https",
+            "protocol": "TCP",
+            "port": 443,
+            "targetPort": "https",
+        }
+    ]
+    route = docs["httproute-demo-example-com.yaml"]["spec"]
+    assert route["rules"][0]["backendRefs"][0]["port"] == 443
+    pod_spec = docs["deployment-demo-example-com.yaml"]["spec"]["template"]["spec"]
+    assert pod_spec["volumes"] == [
+        {"name": "tls", "secret": {"secretName": certificate["secretName"]}}
+    ]
+    container = pod_spec["containers"][0]
+    assert container["ports"] == [
+        {"name": "https", "containerPort": 8080, "protocol": "TCP"}
+    ]
+    assert container["volumeMounts"] == [
+        {"name": "tls", "mountPath": "/tls", "readOnly": True}
+    ]
+    assert container["livenessProbe"]["httpGet"] == {
+        "path": "/healthz",
+        "port": "https",
+        "scheme": "HTTPS",
+    }
+
+
+def test_generate_website_defaults_to_plain_http(tmp_path: Path) -> None:
+    paths = generate_website(
+        WebsiteConfig(name="demo.example.com", namespace="demo"), tmp_path / "output"
+    )
+    docs = {path.name: yaml.safe_load(path.read_text()) for path in paths}
+    assert "certificate-demo-example-com-internal.yaml" not in docs
+    assert "backendtlspolicy-demo-example-com.yaml" not in docs
+    assert docs["service-demo-example-com.yaml"]["spec"]["ports"] == [
+        {"protocol": "TCP", "port": 80, "targetPort": 8080}
+    ]

@@ -717,3 +717,26 @@ image = "nginx:latest"
     config = only_config(configs)
     assert isinstance(config, WebsiteConfig)
     assert config.replicas == DEFAULT_REPLICA_COUNT
+
+
+@pytest.mark.parametrize("tls", [True, False])
+def test_load_website_tls_option(tmp_path: Path, tls: bool) -> None:
+    source = tmp_path / "config.toml"
+    source.write_text(
+        f'[[website]]\nname = "demo.example.com"\nnamespace = "demo"\ntls = {str(tls).lower()}\n'
+    )
+    block = WebsiteBlock()
+    block.load_config(
+        [{"name": "demo.example.com", "namespace": "demo", "tls": tls}], source, {}
+    )
+    assert block.configs[0].tls is tls
+
+
+@pytest.mark.parametrize("tls", ["true", 1, None])
+def test_load_website_tls_rejects_non_boolean(tmp_path: Path, tls: object) -> None:
+    source = tmp_path / "config.toml"
+    source.write_text("")
+    with pytest.raises(ValueError, match="'tls' must be a boolean"):
+        WebsiteBlock().load_config(
+            [{"name": "demo.example.com", "namespace": "demo", "tls": tls}], source, {}
+        )

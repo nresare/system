@@ -1,4 +1,4 @@
-{{#git_repo}}
+{{#backend_tls}}
 apiVersion: cert-manager.io/v1
 kind: Certificate
 metadata:
@@ -20,4 +20,4 @@ spec:
   usages:
     - digital signature
     - server auth
-{{/git_repo}}
+{{/backend_tls}}
