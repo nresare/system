@@ -23,7 +23,7 @@ from manifest_builder.k8s import (
     make_k8s_name,
     secret_name_from_mount_path,
 )
-from manifest_builder.output import write_documents
+from manifest_builder.output import dump_yaml, write_documents
 
 if __package__:
     from .random_secrets import inject_random_secrets, parse_random_secrets
@@ -37,6 +37,7 @@ class WebsiteConfig:
 
     name: str
     namespace: str
+    tls: bool = False  # serve HTTPS on port 8080 with a cluster-local certificate
     hugo_repo: str | None = None
     image: str | None = None
     args: str | list[str] | None = None
@@ -107,12 +108,40 @@ class WebsiteBlock(ConfigBlock[WebsiteConfig]):
         config: WebsiteConfig,
         context: GenerationContext,
     ) -> set[Path]:
-        return generate_website(
+        paths = generate_website(
             config,
             context.output_dir,
             images=context.images,
             verbose=context.verbose,
         )
+        # Several websites can share a namespace. Only its first entry owns the
+        # manifest, so the orchestrator does not report conflicting outputs.
+        namespace_owner = next(
+            (item for item in self.configs if item.namespace == config.namespace),
+            config,
+        )
+        if config is namespace_owner:
+            paths.add(_write_trusted_namespace(context.output_dir, config.namespace))
+        return paths
+
+
+def _write_trusted_namespace(output_dir: Path, namespace: str) -> Path:
+    """Label the website namespace while retaining its existing metadata."""
+    path = output_dir / namespace / f"namespace-{namespace}.yaml"
+    doc: dict[str, Any]
+    if path.exists():
+        doc = yaml.safe_load(path.read_text())
+    else:
+        doc = {"apiVersion": "v1", "kind": "Namespace", "metadata": {"name": namespace}}
+    metadata = doc.setdefault("metadata", {})
+    metadata.setdefault("labels", {})["trust"] = "cluster-local"
+    metadata.setdefault("annotations", {}).setdefault(
+        "argocd.argoproj.io/sync-options", "PruneLast=true"
+    )
+    path.parent.mkdir(parents=True, exist_ok=True)
+    with path.open("w") as stream:
+        dump_yaml(doc, stream)
+    return path
 
 
 def _parse_website_config(
@@ -130,6 +159,7 @@ def _parse_website_config(
             "name",
             "namespace",
             "hugo-repo",
+            "tls",
             "image",
             "args",
             "env",
@@ -156,6 +186,10 @@ def _parse_website_config(
             raise ValueError(
                 f"Missing required field '{required_field}' in {source_file}"
             )
+
+    tls = data.get("tls", False)
+    if not isinstance(tls, bool):
+        raise ValueError(f"'tls' must be a boolean in {source_file}")
 
     hugo_repo = data.get("hugo-repo")
     image = data.get("image")
@@ -203,6 +237,7 @@ def _parse_website_config(
         name=data["name"],
         namespace=data.get("namespace", default_namespace),
         hugo_repo=hugo_repo,
+        tls=tls,
         image=image,
         args=data.get("args"),
         env=env,
@@ -493,6 +528,7 @@ def generate_website(
         "k8s_name": make_k8s_name(config.name),
         "namespace": config.namespace,
         "replicas": config.replicas,
+        "backend_tls": bool(config.hugo_repo) or config.tls,
     }
     if images:
         context.update(images)
@@ -583,13 +619,34 @@ def generate_website(
                     config.hugo_repo
                 )
 
+    if config.tls and not config.hugo_repo:
+        for doc in docs:
+            if doc.get("kind") != "Deployment":
+                continue
+            pod_spec = doc["spec"]["template"]["spec"]
+            pod_spec.setdefault("volumes", []).append(
+                {
+                    "name": "tls",
+                    "secret": {
+                        "secretName": f"{make_k8s_name(config.name)}-internal-tls"
+                    },
+                }
+            )
+            for container in pod_spec.get("containers", []):
+                container.setdefault("ports", []).append(
+                    {"name": "https", "containerPort": 8080, "protocol": "TCP"}
+                )
+                container.setdefault("volumeMounts", []).append(
+                    {"name": "tls", "mountPath": "/tls", "readOnly": True}
+                )
+
     liveness_probe_path = "/" if config.hugo_repo else "/healthz"
     for doc in docs:
         _inject_liveness_probe(
             doc,
             liveness_probe_path,
-            port="https" if config.hugo_repo else 8080,
-            scheme="HTTPS" if config.hugo_repo else None,
+            port="https" if config.hugo_repo or config.tls else 8080,
+            scheme="HTTPS" if config.hugo_repo or config.tls else None,
         )
 
     if config.env:

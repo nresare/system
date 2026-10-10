@@ -15,12 +15,12 @@ spec:
   rules:
     - backendRefs:
         - name: {{k8s_name}}
-{{#git_repo}}
+{{#backend_tls}}
           port: 443
-{{/git_repo}}
-{{^git_repo}}
+{{/backend_tls}}
+{{^backend_tls}}
           port: 80
-{{/git_repo}}
+{{/backend_tls}}
           group: ""
           kind: Service
           weight: 1
