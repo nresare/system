@@ -6,7 +6,7 @@ same-named ConfigMap with a `ca.crt` key in every namespace with that label.
 The website block preserves existing namespace metadata and the Argo CD
 `PruneLast=true` annotation, and writes one Namespace manifest per namespace.
 
-For a container that serves HTTPS on port 8080, opt in with:
+For a container that serves HTTPS on port 8443, opt in with:
 
 ```toml
 [[website]]
@@ -18,7 +18,8 @@ tls = true
 
 This generates a Certificate from the `cluster-local` ClusterIssuer with the
 service DNS name as its SAN, mounts the resulting Secret read-only at `/tls`,
-and configures the Service, HTTPRoute, and `/healthz` liveness check for HTTPS.
+and configures the Service on port 443, targeting the named `https` container
+port 8443. The HTTPRoute and `/healthz` liveness check use HTTPS.
 Configure the application to read `/tls/tls.crt` and `/tls/tls.key`. It must
 reload these files or be restarted after certificate renewal.
 

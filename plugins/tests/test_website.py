@@ -1768,7 +1768,7 @@ def test_generate_website_tls_backend(tmp_path: Path) -> None:
     ]
     container = pod_spec["containers"][0]
     assert container["ports"] == [
-        {"name": "https", "containerPort": 8080, "protocol": "TCP"}
+        {"name": "https", "containerPort": 8443, "protocol": "TCP"}
     ]
     assert container["volumeMounts"] == [
         {"name": "tls", "mountPath": "/tls", "readOnly": True}
