@@ -1107,6 +1107,7 @@ def test_generate_website_image_uses_healthz_liveness_probe(tmp_path: Path) -> N
 
     container = deployment_doc["spec"]["template"]["spec"]["containers"][0]
     assert container["livenessProbe"] == {"httpGet": {"path": "/healthz", "port": 8080}}
+    assert container["imagePullPolicy"] == "IfNotPresent"
 
 
 def test_generate_website_hugo_uses_root_liveness_probe(tmp_path: Path) -> None:
@@ -1613,6 +1614,10 @@ def test_generate_website_bundled_hugo_uses_images(tmp_path: Path) -> None:
     assert git_container["image"] == "alpine/git:2.47.2"
     hugo_container = next(c for c in init_containers if c["name"] == "hugo")
     assert hugo_container["image"] == "floryn90/hugo:0.155.3-alpine"
+    assert all(
+        container["imagePullPolicy"] == "IfNotPresent"
+        for container in containers + init_containers
+    )
 
 
 def test_generate_website_default_replicas(tmp_path: Path) -> None:

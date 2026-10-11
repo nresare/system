@@ -1,5 +1,6 @@
 - name: git
   image: {{git_image}}
+  imagePullPolicy: IfNotPresent
   command:
   - /bin/sh
   - -c
@@ -14,6 +15,7 @@
       name: src
 - name: hugo
   image: {{hugo_image}}
+  imagePullPolicy: IfNotPresent
   volumeMounts:
     - mountPath: /src
       name: src

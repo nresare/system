@@ -9,6 +9,7 @@ env:
     value: /tls/tls.key
 name: web
 image: {{static_web_server_image}}
+imagePullPolicy: IfNotPresent
 ports:
   - containerPort: 8443
     name: https
