@@ -78,13 +78,6 @@ extra-resources = "idmouse/extra"
 k8s-role = "idmouse-signing-keys"
 config = {"/config/idmouse.toml" = "idmouse/idmouse.toml"}
 
-[[website]]
-name = "k8s.noa.re"
-namespace = "jwksproxy"
-image = "nresare/jwksproxy:0.2.0"
-replicas = 1
-config = { "/config/jwksproxy.toml" = "jwksproxy/jwksproxy.toml" }
-
 [[helm]]
 namespace = "teleport-cluster"
 release = "teleport-cluster"
