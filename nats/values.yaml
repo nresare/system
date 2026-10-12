@@ -1,3 +1,6 @@
+container:
+  image:
+    tag: {{nats_version}}
 config:
   cluster:
     enabled: true

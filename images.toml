@@ -30,3 +30,7 @@ version = "0.2.0-2552c8b6"
 [ceph]
 repo = "quay.io/ceph/ceph"
 version = "v20.2.4"
+
+[nats]
+repo = "nats"
+version = "2.15.1-scratch"
