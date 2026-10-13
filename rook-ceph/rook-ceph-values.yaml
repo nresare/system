@@ -5,6 +5,8 @@
 
 csi:
   installCsiOperator: true
+  # Avoid rendering this chart value as null, which leaves Argo CD perpetually OutOfSync.
+  createCsiOperatorResources: true
   cephcsi:
     tag: v3.17.1
 
