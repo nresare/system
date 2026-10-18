@@ -156,6 +156,7 @@ config = { "/config/webhook-poker.toml" = "webhook-poker/webhook-poker.toml" }
 name = "relcoord.noa.re"
 namespace = "relcoord"
 replicas = 2
+tls = true
 image = "{{relcoord_image}}"
 config = {"/config/relcoord.toml" = "relcoord/relcoord.toml"}
 custom-token-audiences = ["idmouse", "idcat.noa.re"]
