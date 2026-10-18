@@ -1,5 +1,7 @@
 listen = "0.0.0.0"
-port = 8080
+port = 8443
+tls_cert_path = "/tls/tls.crt"
+tls_key_path = "/tls/tls.key"
 system-repository = "https://github.com/nresare/system"
 
 [persistence]
