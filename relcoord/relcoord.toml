@@ -4,6 +4,9 @@ tls_cert_path = "/tls/tls.crt"
 tls_key_path = "/tls/tls.key"
 system-repository = "https://github.com/nresare/system"
 
+[tracing]
+endpoint = "http://tempo.tempo.svc:4317"
+
 [persistence]
 uri = "ws://surrealdb.surrealdb.svc:8000"
 namespace = "default"
