@@ -155,6 +155,7 @@ config = { "/config/webhook-poker.toml" = "webhook-poker/webhook-poker.toml" }
 [[website]]
 name = "relcoord.noa.re"
 namespace = "relcoord"
+request-timeout = "600s"
 replicas = 2
 tls = true
 image = "{{relcoord_image}}"

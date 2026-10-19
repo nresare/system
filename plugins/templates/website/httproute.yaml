@@ -24,6 +24,10 @@ spec:
           group: ""
           kind: Service
           weight: 1
+{{#request_timeout}}
+      timeouts:
+        request: "{{request_timeout}}"
+{{/request_timeout}}
       matches:
         - path:
             type: PathPrefix

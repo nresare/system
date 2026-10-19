@@ -54,6 +54,7 @@ class WebsiteConfig:
     persistence: dict[str, str] | None = None  # mount path -> storage request size
     replicas: int = DEFAULT_REPLICA_COUNT  # number of deployment replicas
     random_secrets: list[str] | None = None  # keys mounted at /random-secrets
+    request_timeout: str | None = None  # Gateway API duration; 0s disables the timeout
 
 
 def validate_website_config(config: WebsiteConfig) -> None:
@@ -173,6 +174,7 @@ def _parse_website_config(
             "custom-token-audiences",
             "persistence",
             "replicas",
+            "request-timeout",
         },
         source_file,
         table_index,
@@ -190,6 +192,16 @@ def _parse_website_config(
     tls = data.get("tls", False)
     if not isinstance(tls, bool):
         raise ValueError(f"'tls' must be a boolean in {source_file}")
+
+    request_timeout = data.get("request-timeout")
+    if request_timeout is not None and (
+        not isinstance(request_timeout, str)
+        or re.fullmatch(r"(?:[0-9]{1,5}(?:h|m|s|ms)){1,4}", request_timeout) is None
+    ):
+        raise ValueError(
+            f"'request-timeout' must be a Gateway API duration string "
+            f"(e.g. '600s' or '0s') in {source_file}"
+        )
 
     hugo_repo = data.get("hugo-repo")
     image = data.get("image")
@@ -249,6 +261,7 @@ def _parse_website_config(
         custom_token_audiences=custom_token_audiences,
         persistence=data.get("persistence"),
         replicas=data.get("replicas", DEFAULT_REPLICA_COUNT),
+        request_timeout=request_timeout,
     )
 
 
@@ -532,6 +545,8 @@ def generate_website(
     }
     if images:
         context.update(images)
+    if config.request_timeout is not None:
+        context["request_timeout"] = config.request_timeout
     if config.image:
         image_reference = re.fullmatch(
             r"\{\{\s*([a-zA-Z_][a-zA-Z_0-9]*)\s*\}\}", config.image
