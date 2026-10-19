@@ -28,3 +28,12 @@ namespace's `cluster-local-ca` ConfigMap. Envoy Gateway negotiates the upstream
 HTTP version through ALPN; an HTTP/2-capable TLS server can negotiate `h2`.
 Hugo websites keep their existing TLS setup on port 8443. Other websites use
 plain HTTP unless `tls = true` is set.
+
+## Request timeout
+
+Set `request-timeout = "600s"` in a `[[website]]` block to allow requests up to
+ten minutes. This sets the HTTPRoute rule's `timeouts.request`, including the
+time to finish a streaming response. Values use Gateway API duration syntax
+(for example, `30s` or `10m`); `0s` disables the overall request timeout.
+Omitting the setting preserves the gateway's default. Stream idle timeouts
+are configured separately.

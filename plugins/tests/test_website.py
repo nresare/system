@@ -21,6 +21,39 @@ spec: {}
 """
 
 
+@pytest.mark.parametrize("timeout", [None, "600s", "0s", "1m30s"])
+def test_website_request_timeout(tmp_path: Path, timeout: str | None) -> None:
+    data = {"name": "relcoord.example.com", "namespace": "relcoord"}
+    if timeout is not None:
+        data["request-timeout"] = timeout
+    block = WebsiteBlock()
+    block.load_config([data], tmp_path / "config.toml", {})
+    paths = generate_website(block.configs[0], tmp_path / "output")
+    route = next(
+        doc
+        for path in paths
+        if (doc := yaml.safe_load(path.read_text()))["kind"] == "HTTPRoute"
+    )
+    rule = route["spec"]["rules"][0]
+    if timeout is None:
+        assert "timeouts" not in rule
+    else:
+        assert rule["timeouts"] == {"request": timeout}
+
+
+@pytest.mark.parametrize("timeout", [600, False, "", "-1s", "10 minutes", "600"])
+def test_website_rejects_invalid_request_timeout(
+    tmp_path: Path, timeout: object
+) -> None:
+    block = WebsiteBlock()
+    with pytest.raises(ValueError, match="request-timeout.*duration string"):
+        block.load_config(
+            [{"name": "example.com", "namespace": "web", "request-timeout": timeout}],
+            tmp_path / "config.toml",
+            {},
+        )
+
+
 def _make_website_config(tmp_path: Path) -> tuple[WebsiteConfig, Path]:
     """Create a WebsiteConfig for testing, with a temporary templates directory.
 
