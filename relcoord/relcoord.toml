@@ -44,5 +44,5 @@ github-app = "nresare-buildsystem"
 token-path = "/var/run/secrets/tokens/idcat.noa.re"
 
 [[output]]
-name = "berries"
+name = "fruktsallad"
 repository = "https://github.com/nresare/fruktsallad"
