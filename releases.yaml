@@ -52,7 +52,7 @@ releases:
     version: 18.11.7
   - name: teleport-kube-agent
     chart: teleport/teleport-kube-agent
-    version: 18.11.4
+    version: 18.11.7
   - name: envoy-gateway
     chart: envoyproxy/gateway-helm
     version: 1.9.2
