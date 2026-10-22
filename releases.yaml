@@ -76,7 +76,7 @@ releases:
     version: 18.17.1
   - name: tempo
     chart: grafana-community/tempo
-    version: 3.2.0
+    version: 3.2.1
   - name: rook
     chart: rook/rook-ceph
     version: v1.21.0
