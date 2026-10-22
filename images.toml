@@ -24,7 +24,7 @@ version = "v3.3.4"
 
 [relcoord]
 repo = "public.ecr.aws/portswigger-platform/relcoord"
-version = "0.2.0-2a3884ee"
+version = "0.2.0-27639848"
 
 # rook only support up to v20 major version at this point
 [ceph]
