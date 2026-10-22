@@ -176,3 +176,13 @@ custom-token-audiences = ["nats"]
 [[helm]]
 namespace = "randomsecret"
 release = "randomsecret"
+
+[[website]]
+name = "grafana-editor.noa.re"
+namespace = "grafana-editor"
+tls = true
+image = "{{grafana_editor_image}}"
+replicas = 2
+request-timeout = "600s"
+config = {"/config/grafana-editor.toml" = "grafana-editor/grafana-editor.toml"}
+external-secrets = ["/grafana-token"]
