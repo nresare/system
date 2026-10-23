@@ -8,6 +8,9 @@ resource-server-url = "https://grafana-editor.noa.re"
 origin = "https://id.noa.re"
 scopes = ["email"]
 
+[traces]
+endpoint = "http://tempo.tempo.svc:4317"
+
 [[role]]
 name = "idelephant"
 issuer = "https://id.noa.re"
