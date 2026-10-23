@@ -12,7 +12,7 @@ scopes = ["email"]
 endpoint = "http://tempo.tempo.svc:4317"
 
 [[role]]
-name = "idelephant"
+name = "any-idelephant-user"
 issuer = "https://id.noa.re"
 audience = "https://grafana-editor.noa.re"
 
