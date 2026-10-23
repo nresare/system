@@ -28,7 +28,7 @@ version = "0.2.0-27639848"
 
 [grafana-editor]
 repo = "public.ecr.aws/portswigger-platform/grafana-editor"
-version = "0.1.0-17e379b3"
+version = "0.1.0-7d4ed791"
 
 # rook only support up to v20 major version at this point
 [ceph]
