@@ -1,24 +1,22 @@
 origin = "https://idfrog.noa.re"
 listen = "0.0.0.0:8443"
-tls_cert_path = "/tls/tls.crt"
-tls_key_path = "/tls/tls.key"
-signing_key_file = "/idfrog-signing-key/tls.key"
+tls-cert-path = "/tls/tls.crt"
+tls-key-path = "/tls/tls.key"
+signing-key-file = "/idfrog-signing-key/tls.key"
 
-# Exact resource identifiers advertised by the MCP servers.
-resources = ["https://grafana-editor.noa.re"]
-required_groups = []
+[[resource]]
+uri = "https://grafana-editor.noa.re"
+application-id = "0816f759-d89d-4319-a8d7-d88b5d751dc9"
+
+[traces]
+endpoint = "http://tempo.tempo.svc:4317"
+excluded-paths = ["/healthz"]
 
 [upstream]
 issuer = "https://login.microsoftonline.com/1b5955bf-2426-4ced-8412-9fe81bb8bca4/v2.0"
-client_id = "73058fe2-56c3-42be-8fe1-e8f3e65ade9f"
-
-[[upstream.permissions]]
-resource = "https://grafana-editor.noa.re"
-scope = "api://0816f759-d89d-4319-a8d7-d88b5d751dc9/Full"
-audiences = ["api://0816f759-d89d-4319-a8d7-d88b5d751dc9", "0816f759-d89d-4319-a8d7-d88b5d751dc9"]
-required_scope = "Full"
+client-id = "73058fe2-56c3-42be-8fe1-e8f3e65ade9f"
 
 [upstream.authentication]
-method = "private_key_jwt"
-certificate_file = "/idfrog-entra-client/tls.crt"
-private_key_file = "/idfrog-entra-client/tls.key"
+method = "private-key-jwt"
+certificate-file = "/idfrog-entra-client/tls.crt"
+private-key-file = "/idfrog-entra-client/tls.key"
