@@ -1,0 +1,22 @@
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: idfrog-entra-client
+  namespace: idfrog
+spec:
+  secretName: idfrog-entra-client
+  commonName: idfrog-entra-client
+  duration: 8760h
+  renewBefore: 720h
+  privateKey:
+    algorithm: RSA
+    size: 2048
+    encoding: PKCS8
+    rotationPolicy: Always
+  usages:
+    - digital signature
+    - client auth
+  issuerRef:
+    name: cluster-local-selfsigned
+    kind: ClusterIssuer
+    group: cert-manager.io

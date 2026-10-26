@@ -186,3 +186,18 @@ replicas = 2
 request-timeout = "600s"
 config = {"/config/grafana-editor.toml" = "grafana-editor/grafana-editor.toml"}
 external-secrets = ["/grafana-token"]
+
+[[website]]
+name = "idfrog.noa.re"
+namespace = "idfrog"
+image = "nresare/idfrog:latest"
+# Authorization transactions and refresh grants are held in memory.
+replicas = 1
+tls = true
+args = ["-c", "/config/idfrog.toml"]
+config = {"/config/idfrog.toml" = "idfrog/idfrog.toml"}
+external-secrets = ["/idfrog-entra-client", "/idfrog-signing-key"]
+
+[[copy]]
+namespace = "idfrog"
+source = "idfrog/certificates"

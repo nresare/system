@@ -5,7 +5,7 @@ tls-key-path = "/tls/tls.key"
 log-level = "INFO"
 
 resource-server-url = "https://grafana-editor.noa.re"
-origin = "https://id.noa.re"
+origin = "https://idfrog.noa.re"
 scopes = ["email"]
 
 [traces]
@@ -14,6 +14,11 @@ endpoint = "http://tempo.tempo.svc:4317"
 [[role]]
 name = "any-idelephant-user"
 issuer = "https://id.noa.re"
+audience = "https://grafana-editor.noa.re"
+
+[[role]]
+name = "idfrog-grafana-editor"
+issuer = "https://idfrog.noa.re"
 audience = "https://grafana-editor.noa.re"
 
 [grafana]
