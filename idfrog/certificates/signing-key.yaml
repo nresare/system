@@ -1,0 +1,20 @@
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: idfrog-signing-key
+  namespace: idfrog
+spec:
+  secretName: idfrog-signing-key
+  commonName: idfrog-signing-key
+  privateKey:
+    algorithm: ECDSA
+    size: 256
+    encoding: PKCS8
+    # Keep the signing identity stable across certificate renewals.
+    rotationPolicy: Never
+  usages:
+    - digital signature
+  issuerRef:
+    name: cluster-local-selfsigned
+    kind: ClusterIssuer
+    group: cert-manager.io
