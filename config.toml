@@ -190,7 +190,7 @@ external-secrets = ["/grafana-token"]
 [[website]]
 name = "idfrog.noa.re"
 namespace = "idfrog"
-image = "nresare/idfrog:latest"
+image = "nresare/idfrog:0.0.1"
 # Authorization transactions and refresh grants are held in memory.
 replicas = 1
 tls = true
