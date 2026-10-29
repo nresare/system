@@ -20,7 +20,7 @@ version = "3.24.3"
 
 [surrealdb]
 repo = "surrealdb/surrealdb"
-version = "v3.3.4"
+version = "v3.3.5"
 
 [relcoord]
 repo = "public.ecr.aws/portswigger-platform/relcoord"
