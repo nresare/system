@@ -19,6 +19,13 @@ audience = "idcat.noa.re"
 issuer = "https://k8s.noa.re"
 claims = {sub="system:serviceaccount:default:default"}
 
+# Any service account in the cluster. Grants nothing by itself: only the
+# installation-policies that name it, each pinning the service account.
+[[role]]
+name = "kubernetes"
+audience = "idcat.noa.re"
+issuer = "https://k8s.noa.re"
+
 [[github-app]]
 name = "nresare-buildsystem"
 allowed-roles = ["buildkite", "relcoord", "manual"]
@@ -26,6 +33,14 @@ app-id = 3511383
 secret-key = "nresare-buildsystem.key"
 webhook-target = "nats"
 webhook-validation-secret-file = "/random-secrets/webhook"
+
+# argo-cd reads the generated manifests through its argo-idcat sidecar.
+[[installation-policy]]
+github-app = "nresare-buildsystem"
+repository = "nresare/fruktsallad"
+role = "kubernetes"
+required-claims = { sub = "system:serviceaccount:argo:argocd-repo-server" }
+permissions = { contents = "read" }
 
 [nats]
 endpoint = "nats://nats.nats.svc"

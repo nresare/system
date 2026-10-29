@@ -21,3 +21,61 @@ configs:
     reposerver.max.combined.directory.manifests.size: '30M'
 dex:
   enabled: false
+repoServer:
+  initContainers:
+    # Answers argo-cd's GitHub App token requests with installation tokens from
+    # idcat, see argo/extra/secret-repo-fruktsallad.yaml. A native sidecar
+    # (restartPolicy: Always), so it is up before the repo-server starts.
+    - name: argo-idcat
+      image: nresare/argo-idcat:0.0.1
+      restartPolicy: Always
+      env:
+        - name: IDCAT_ENDPOINT
+          value: https://idcat.noa.re
+        - name: GITHUB_APP
+          value: nresare-buildsystem
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 65532
+        readOnlyRootFilesystem: true
+        allowPrivilegeEscalation: false
+        seccompProfile:
+          type: RuntimeDefault
+        capabilities:
+          drop:
+            - ALL
+      # The token endpoint listens on loopback only; /healthz has a listener
+      # of its own on all interfaces so that kubelet can reach it.
+      ports:
+        - name: idcat-health
+          containerPort: 8182
+      startupProbe:
+        httpGet:
+          path: /healthz
+          port: idcat-health
+        periodSeconds: 1
+        failureThreshold: 30
+      livenessProbe:
+        httpGet:
+          path: /healthz
+          port: idcat-health
+        periodSeconds: 30
+      resources:
+        requests:
+          cpu: 5m
+          memory: 8Mi
+        limits:
+          memory: 32Mi
+      volumeMounts:
+        # argo-idcat reads the token from /var/run/secrets/tokens/idcat.
+        - name: argo-idcat-token
+          mountPath: /var/run/secrets/tokens
+          readOnly: true
+  volumes:
+    - name: argo-idcat-token
+      projected:
+        sources:
+          - serviceAccountToken:
+              path: idcat
+              audience: idcat.noa.re
+              expirationSeconds: 3600
