@@ -73,7 +73,7 @@ releases:
     version: 1.14.2
   - name: loki
     chart: grafana-community/loki
-    version: 19.0.3
+    version: 20.0.3
   - name: tempo
     chart: grafana-community/tempo
     version: 3.2.1
