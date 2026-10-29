@@ -37,4 +37,4 @@ version = "v20.2.4"
 
 [nats]
 repo = "nats"
-version = "2.15.1-scratch"
+version = "2.15.2"
