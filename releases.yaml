@@ -91,7 +91,7 @@ releases:
     version: 8.8.0
   - name: nats
     chart: nats/nats
-    version: 2.15.1
+    version: 2.15.2
   - name: nack
     chart: nats/nack
     version: 0.35.0
