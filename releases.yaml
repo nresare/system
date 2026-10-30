@@ -43,7 +43,7 @@ releases:
     version: v1.21.3
   - name: trust-manager
     chart: jetstack/trust-manager
-    version: v0.25.0
+    version: v0.26.0
   - name: surrealdb
     chart: surrealdb/surrealdb
     version: 0.5.0
