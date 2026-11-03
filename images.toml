@@ -24,7 +24,7 @@ version = "v3.3.5"
 
 [relcoord]
 repo = "public.ecr.aws/portswigger-platform/relcoord"
-version = "0.2.0-27639848"
+version = "0.2.0-d07c5b16"
 
 [grafana-editor]
 repo = "public.ecr.aws/portswigger-platform/grafana-editor"
