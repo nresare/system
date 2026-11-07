@@ -1,7 +1,3 @@
-service:
-  type: LoadBalancer
-  loadBalancerClass: noa.re/external-envoy
-
 config:
   envoyGateway:
     extensionApis:

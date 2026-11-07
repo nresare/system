@@ -10,7 +10,8 @@ spec:
       envoyDeployment:
         replicas: 2
       envoyService:
-        type: NodePort
+        type: LoadBalancer
+        loadBalancerClass: noa.re/external-envoy
         externalTrafficPolicy: Cluster
         patch:
           type: JSONMerge
