@@ -1,7 +1,6 @@
-deployment:
-  pod:
-    annotations:
-      noa.re/envoy-gateway-config-revision: enable-backend-api
+service:
+  type: LoadBalancer
+  loadBalancerClass: noa.re/external-envoy
 
 config:
   envoyGateway:
