@@ -147,6 +147,7 @@ args = [
 
 [[simple]]
 name = "external-envoy-controller"
+extra-resources = "external-envoy-controller/extra"
 replicas = 1
 image = "repo.noa.re/external-envoy-controller:0.1.0-d8c7c5f2"
 
