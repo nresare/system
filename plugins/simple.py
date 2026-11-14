@@ -211,7 +211,7 @@ def _parse_simple_config(
         table_index,
     )
 
-    if "namespace" not in data and default_namespace is None:
+    if "namespace" not in data and default_namespace is None and "name" not in data:
         raise ValueError(f"Missing required field 'namespace' in {source_file}")
 
     if default_image is not None and "image" in data:
@@ -275,7 +275,10 @@ def _parse_simple_config(
 
     random_secrets = parse_random_secrets(data, source_file)
 
-    namespace = data.get("namespace", default_namespace)
+    namespace = data.get(
+        "namespace",
+        default_namespace if default_namespace is not None else data.get("name"),
+    )
     image = data.get("image", default_image)
     name = data.get("name", namespace)
     extra_resources = None
