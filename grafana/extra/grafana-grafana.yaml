@@ -16,6 +16,7 @@ spec:
           noa.re/discover: enabled
         annotations:
           teleport.dev/name: grafana
+          teleport.dev/protocol: http
     deployment:
       spec:
         strategy:
