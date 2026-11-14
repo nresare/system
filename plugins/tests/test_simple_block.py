@@ -79,6 +79,36 @@ def test_load_simple_config(tmp_path: Path) -> None:
     assert config.config == {"/config/myconfig.toml": conf / "idcat" / "myconfig.toml"}
 
 
+@pytest.mark.parametrize(
+    ("namespace", "default_namespace", "expected_namespace"),
+    [(None, None, "idcat"), ("apps", None, "apps"), (None, "shared", "shared")],
+)
+def test_load_simple_config_namespace_with_name(
+    tmp_path: Path,
+    namespace: str | None,
+    default_namespace: str | None,
+    expected_namespace: str,
+) -> None:
+    """Name supplies the namespace unless an explicit or API default is provided."""
+    block = SimpleBlock()
+    data = {"name": "idcat", "image": "example.com/idcat:1.0"}
+    if namespace is not None:
+        data["namespace"] = namespace
+    block.load_config([data], tmp_path / "config.toml", {}, default_namespace)
+
+    (config,) = block.iter_configs()
+    assert config.name == "idcat"
+    assert config.namespace == expected_namespace
+
+
+def test_load_simple_config_requires_name_or_namespace(tmp_path: Path) -> None:
+    """A namespace cannot be inferred without a name or namespace default."""
+    with pytest.raises(ValueError, match="Missing required field 'namespace'"):
+        SimpleBlock().load_config(
+            [{"image": "example.com/idcat:1.0"}], tmp_path / "config.toml", {}
+        )
+
+
 def test_load_simple_config_uses_default_namespace(tmp_path: Path) -> None:
     """Simple config can get its namespace from namespace-owner mode."""
     conf = tmp_path / "conf"

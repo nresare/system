@@ -146,8 +146,12 @@ args = [
 ]
 
 [[simple]]
+name = "external-envoy-controller"
+replicas = 1
+image = "repo.noa.re/external-envoy-controller:0.1.0-d8c7c5f2"
+
+[[simple]]
 name = "webhook-poker"
-namespace = "webhook-poker"
 replicas = 1
 image = "public.ecr.aws/portswigger-platform/webhook-poker:0.0.6"
 custom-token-audiences = ["nats"]
