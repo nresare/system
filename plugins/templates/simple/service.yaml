@@ -7,6 +7,9 @@ spec:
   selector:
     app: {{k8s_name}}
   ports:
-    - name: http
-      port: 80
-      targetPort: http
+    - name: {{port_name}}
+      port: {{service_port}}
+      targetPort: {{port_name}}
+{{#grpc}}
+      appProtocol: kubernetes.io/h2c
+{{/grpc}}

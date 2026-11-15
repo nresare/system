@@ -56,6 +56,7 @@ class SimpleConfig:
         None  # directory with additional YAML resources to include
     )
     replicas: int = DEFAULT_REPLICA_COUNT  # number of deployment replicas
+    grpc: bool = False
     arch: str | None = None  # node architecture (sets kubernetes.io/arch nodeSelector)
     random_secrets: list[str] | None = (
         None  # secret key names for a RandomSecret mounted at /random-secrets
@@ -203,6 +204,7 @@ def _parse_simple_config(
             "custom-token-audiences",
             "extra-resources",
             "replicas",
+            "grpc",
             "arch",
             "random-secret",
             "random-secrets",
@@ -220,6 +222,10 @@ def _parse_simple_config(
         )
     if "image" not in data and default_image is None:
         raise ValueError(f"Missing required field 'image' in {source_file}")
+
+    grpc = data.get("grpc", False)
+    if not isinstance(grpc, bool):
+        raise ValueError(f"'grpc' must be a boolean in {source_file}")
 
     iam_role = data.get("iam-role")
     if iam_role is not None and not isinstance(iam_role, str):
@@ -299,6 +305,7 @@ def _parse_simple_config(
         variables=variables.copy(),
         extra_resources=extra_resources,
         replicas=data.get("replicas", DEFAULT_REPLICA_COUNT),
+        grpc=grpc,
         arch=arch,
         random_secrets=random_secrets,
     )
@@ -436,6 +443,10 @@ def generate_simple(
         "k8s_name": make_k8s_name(config.name),
         "namespace": config.namespace,
         "replicas": config.replicas,
+        "grpc": config.grpc,
+        "port_name": "grpc" if config.grpc else "http",
+        "container_port": 50051 if config.grpc else 8080,
+        "service_port": 50051 if config.grpc else 80,
     }
     context["image"] = config.image
     if config.args:
