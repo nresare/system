@@ -169,7 +169,7 @@ custom-token-audiences = ["idmouse", "idcat.noa.re"]
 [[website]]
 name = "idcat.noa.re"
 namespace = "idcat"
-image = "public.ecr.aws/portswigger-platform/idcat:934b43e7"
+image = "public.ecr.aws/portswigger-platform/idcat:c69f8e52"
 replicas = 2
 args = ["--debug"]
 external-secrets = ["/app-keys"]
