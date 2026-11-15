@@ -37,3 +37,26 @@ time to finish a streaming response. Values use Gateway API duration syntax
 (for example, `30s` or `10m`); `0s` disables the overall request timeout.
 Omitting the setting preserves the gateway's default. Stream idle timeouts
 are configured separately.
+
+# Simple gRPC deployments
+
+Set `grpc = true` in a `[[simple]]` block to generate a cleartext gRPC Service
+and container port named `grpc`, both on port 50051. The Service advertises
+`appProtocol: kubernetes.io/h2c`. This port is a project convention, not a
+protocol requirement.
+
+```toml
+[[simple]]
+namespace = "example-grpc"
+image = "example/grpc-server:latest"
+grpc = true
+```
+
+The application must listen on port 50051 and implement `grpc.health.v1.Health`.
+Generated Kubernetes gRPC liveness and readiness probes use health service names
+`liveness` and `readiness`, respectively. The application should report liveness
+while it can respond, and readiness only when it can serve traffic. The probes
+use the numeric container port, as required by Kubernetes.
+
+Omitting `grpc`, or setting it to false, keeps the HTTP defaults: Service port 80
+targeting the `http` container port 8080, without gRPC probes.
