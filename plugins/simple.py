@@ -5,6 +5,7 @@
 import json
 from collections.abc import Sequence
 from dataclasses import dataclass, field
+from ipaddress import ip_address
 from pathlib import Path
 from typing import Any
 
@@ -57,6 +58,7 @@ class SimpleConfig:
     )
     replicas: int = DEFAULT_REPLICA_COUNT  # number of deployment replicas
     grpc: bool = False
+    kube_vip_ip: str | None = None
     arch: str | None = None  # node architecture (sets kubernetes.io/arch nodeSelector)
     random_secrets: list[str] | None = (
         None  # secret key names for a RandomSecret mounted at /random-secrets
@@ -205,6 +207,7 @@ def _parse_simple_config(
             "extra-resources",
             "replicas",
             "grpc",
+            "kube-vip-ip",
             "arch",
             "random-secret",
             "random-secrets",
@@ -226,6 +229,22 @@ def _parse_simple_config(
     grpc = data.get("grpc", False)
     if not isinstance(grpc, bool):
         raise ValueError(f"'grpc' must be a boolean in {source_file}")
+
+    kube_vip_ip = None
+    if "kube-vip-ip" in data:
+        value = data["kube-vip-ip"]
+        if not isinstance(value, str):
+            raise ValueError(
+                f"'kube-vip-ip' must be an IPv4 or IPv6 address string in {source_file}"
+            )
+        try:
+            if "%" in value:
+                raise ValueError("scoped addresses are not supported")
+            kube_vip_ip = str(ip_address(value))
+        except ValueError as error:
+            raise ValueError(
+                f"'kube-vip-ip' must be an IPv4 or IPv6 address string in {source_file}"
+            ) from error
 
     iam_role = data.get("iam-role")
     if iam_role is not None and not isinstance(iam_role, str):
@@ -306,6 +325,7 @@ def _parse_simple_config(
         extra_resources=extra_resources,
         replicas=data.get("replicas", DEFAULT_REPLICA_COUNT),
         grpc=grpc,
+        kube_vip_ip=kube_vip_ip,
         arch=arch,
         random_secrets=random_secrets,
     )
@@ -444,6 +464,7 @@ def generate_simple(
         "namespace": config.namespace,
         "replicas": config.replicas,
         "grpc": config.grpc,
+        "kube_vip_ip": config.kube_vip_ip,
         "port_name": "grpc" if config.grpc else "http",
         "container_port": 50051 if config.grpc else 8080,
         "service_port": 50051 if config.grpc else 80,
