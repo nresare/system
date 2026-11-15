@@ -1,0 +1,25 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: teleport-external
+spec:
+  type: LoadBalancer
+  loadBalancerClass: noa.re/external-envoy
+  allocateLoadBalancerNodePorts: false
+  selector:
+    app.kubernetes.io/component: proxy
+    app.kubernetes.io/instance: teleport-cluster
+    app.kubernetes.io/name: teleport-cluster
+  ports:
+    - name: sshproxy
+      port: 3023
+      protocol: TCP
+      targetPort: 3023
+    - name: sshtun
+      port: 3024
+      protocol: TCP
+      targetPort: 3024
+    - name: k8s
+      port: 3026
+      protocol: TCP
+      targetPort: 3026
