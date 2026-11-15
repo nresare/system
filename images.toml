@@ -1,6 +1,6 @@
 [git]
 repo = "alpine/git"
-version = "v2.54.0"
+version = "v2.54.1"
 
 [hugo]
 repo = "floryn90/hugo"
