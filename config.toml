@@ -146,7 +146,7 @@ args = [
 ]
 
 [[copy]]
-namespace = "external-envoy-controller"
+name = "external-envoy-controller"
 source = "external-envoy-controller/extra"
 
 [[simple]]
