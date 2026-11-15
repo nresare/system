@@ -60,3 +60,26 @@ use the numeric container port, as required by Kubernetes.
 
 Omitting `grpc`, or setting it to false, keeps the HTTP defaults: Service port 80
 targeting the `http` container port 8080, without gRPC probes.
+
+## kube-vip address
+
+Set `kube-vip-ip` to a single IPv4 or IPv6 address to expose a simple deployment
+through kube-vip:
+
+```toml
+[[simple]]
+namespace = "example-grpc"
+image = "example/grpc-server:latest"
+grpc = true
+kube-vip-ip = "192.0.2.10"
+```
+
+The generated Service has `type: LoadBalancer`,
+`loadBalancerClass: kube-vip.io/kube-vip-class`, and the
+`kube-vip.io/loadbalancerIPs` annotation set to that address. Reserve an address
+reachable from your clients and enable Service support in kube-vip. The example
+address is for documentation. Hostnames, CIDRs, scoped IPv6 addresses, and lists
+of addresses are not accepted.
+
+This setting works with both HTTP and gRPC and keeps their existing ports and
+health checks. Omitting it generates the default ClusterIP Service.
