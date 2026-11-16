@@ -64,7 +64,7 @@ releases:
     version: 3.14.0
   - name: grafana-operator
     chart: grafana-oci/grafana-operator
-    version: 5.25.0
+    version: 5.26.0
   - name: mimir
     chart: grafana-oci/mimir-distributed
     version: 6.2.2
