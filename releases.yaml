@@ -100,7 +100,7 @@ releases:
     version: 0.1.4
   - name: kubelet-csr-approver
     chart: kubelet-csr-approver/kubelet-csr-approver
-    version: 1.2.15
+    version: 1.2.16
   - name: cilium
     chart: cilium/cilium
     verison: 1.20.1
