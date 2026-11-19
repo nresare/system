@@ -94,7 +94,7 @@ releases:
     version: 2.15.3
   - name: nack
     chart: nats/nack
-    version: 0.35.0
+    version: 0.36.0
   - name: randomsecret
     chart: portswigger-platform/randomsecret
     version: 0.1.4
